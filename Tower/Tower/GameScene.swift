@@ -25,18 +25,22 @@ class GameScene: SKScene {
         let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
         ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
         addChild(ground)
+        movePlayer()
     }
     
     func movePlayer(){
         let minX = player.size.width / 2
         let maxX = self.frame.size.width - player.size.width / 2
-        let actionMoveLeft = SKAction.moveToX(-player.size.width/2, duration: 2.0)
-        let actionMoveRight = SKAction.moveToX(+player.size.width/2, duration: 2.0)
+        let actionMoveLeft = SKAction.moveByX(1.0, y: 0.0, duration: 2.0)
+      //  let actionMoveRight = SKAction.movebyX(+player.size.width/2, duration: 2.0)
+        
         // if player is positioned to the left of the center x
-//        while (player.position.x < maxX)
-//        {
-//            player.runAction(actionMoveLeft)
-//        }
+        //if (player.position.x < maxX)
+        //{
+           player.runAction(SKAction.repeatActionForever(actionMoveLeft))
+        
+        //}
+        //player.runAction(actionMoveRight)
 //        
 //        if (player.position.x >= minX)
 //        {

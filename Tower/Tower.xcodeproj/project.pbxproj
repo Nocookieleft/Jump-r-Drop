@@ -15,6 +15,7 @@
 		76563DB01B1C95C00007254C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76563DAF1B1C95C00007254C /* Images.xcassets */; };
 		76563DB31B1C95C00007254C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76563DB11B1C95C00007254C /* LaunchScreen.xib */; };
 		76563DBF1B1C95C00007254C /* TowerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DBE1B1C95C00007254C /* TowerTests.swift */; };
+		76563DCB1B1CB6610007254C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DCA1B1CB6610007254C /* Player.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		76563DB81B1C95C00007254C /* TowerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TowerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		76563DBD1B1C95C00007254C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76563DBE1B1C95C00007254C /* TowerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerTests.swift; sourceTree = "<group>"; };
+		76563DCA1B1CB6610007254C /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			children = (
 				76563DA41B1C95C00007254C /* AppDelegate.swift */,
 				76563DA61B1C95C00007254C /* GameScene.sks */,
+				76563DCA1B1CB6610007254C /* Player.swift */,
 				76563DA81B1C95C00007254C /* GameScene.swift */,
 				76563DAA1B1C95C00007254C /* GameViewController.swift */,
 				76563DAC1B1C95C00007254C /* Main.storyboard */,
@@ -219,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76563DCB1B1CB6610007254C /* Player.swift in Sources */,
 				76563DA91B1C95C00007254C /* GameScene.swift in Sources */,
 				76563DAB1B1C95C00007254C /* GameViewController.swift in Sources */,
 				76563DA51B1C95C00007254C /* AppDelegate.swift in Sources */,
