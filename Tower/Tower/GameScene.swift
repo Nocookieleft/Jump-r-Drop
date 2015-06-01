@@ -11,7 +11,8 @@ import SpriteKit
 class GameScene: SKScene {
     
     let player = SKSpriteNode(imageNamed:"Player")
-
+    var towerLvl: Int = 1
+    let floor = SKSpriteNode(imageNamed:"floor")
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -19,30 +20,36 @@ class GameScene: SKScene {
         // spawn player and setup properties
         player.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
         addChild(player)
+        floor.position = CGPoint(x: size.width * 0.1, y: size.height * 0.05)
+        addChild(floor)
+        let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
+        ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
+        addChild(ground)
     }
     
     func movePlayer(){
-        
+        let minX = player.size.width / 2
+        let maxX = self.frame.size.width - player.size.width / 2
         let actionMoveLeft = SKAction.moveToX(-player.size.width/2, duration: 2.0)
         let actionMoveRight = SKAction.moveToX(+player.size.width/2, duration: 2.0)
         // if player is positioned to the left of the center x
-        if (player.position.x <= (size.width + player.size.width/2))
-        {
-            player.runAction(actionMoveLeft)
-            
-        
-        }else if (player.position.x >=  (size.width + player.size.width/2))
-        {
-            player.runAction(actionMoveRight)
-        }
-        
-        
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Welcome to Tower!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        
-        self.addChild(myLabel)
+//        while (player.position.x < maxX)
+//        {
+//            player.runAction(actionMoveLeft)
+//        }
+//        
+//        if (player.position.x >= minX)
+//        {
+//            player.runAction(actionMoveRight)
+//        }
+//        
+//        //old
+//        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
+//        myLabel.text = "Welcome to Tower!";
+//        myLabel.fontSize = 65;
+//        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
+//        
+//        self.addChild(myLabel)
     }
     
 //    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
