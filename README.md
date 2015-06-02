@@ -38,8 +38,7 @@ As the player progresses in the game, the screen will 'move' over the levels ver
 Soon the ground floor will dissapear, leaving a gap in which the player might fall.
 
 
-![player falls][pic4]
-[pic4]: https://github.com/Nocookieleft/ProjectSP/tree/master/doc/Tpic4.png "Player falls - game ends"
+![player falls](doc/Tpic4.png) "Player falls - game ends"
 
 Should the player fall and there is no lower platform the player could land on (in other words: the player falls and disappears from the edge of the screen), the game ends. 
 
