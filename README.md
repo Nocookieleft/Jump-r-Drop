@@ -15,7 +15,8 @@ Features
 Design
 ------
 
-(sketches)
+![alt text][pic1]
+[pic1]: https://github.com/Nocookieleft/ProjectSP/doc/Tpic1.jpg "Player moving on ground floor"
 
 
 
@@ -63,8 +64,10 @@ Potential Problems
 
 Related content
 ---------------
-The game crossy road (based on the classic frogger) might help provide insights in the generation of sprites from outside of the game frame
-The game flappy bird might have similar gameplay 
+The game Crossy Road (based on the classic frogger) might help provide insights in the generation of sprites from outside of the game frame
+The game Doodle Jump seems to have quite similar gameplay
+
+
 (review similar applications / visualizations / features / technical aspects)
 
 

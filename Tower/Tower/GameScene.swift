@@ -60,12 +60,8 @@ class GameScene: SKScene {
 //        /* Called when a touch begins */
 //        
 //        for touch in (touches as! Set<UITouch>) {
-//            let location = touch.locationInNode(self)
 //            
-//            
-//            sprite.xScale = 0.5
-//            sprite.yScale = 0.5
-//            sprite.position = location
+//                 .position = location
 //            
 //            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
 //            
