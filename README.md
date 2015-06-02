@@ -16,21 +16,21 @@ Design
 ------
 
 ![player ground floor][pic1]
-[pic1]: https://github.com/Nocookieleft/ProjectSP/doc/Tpic1.png "Player moving on ground floor"
+[pic1]: https://github.com/Nocookieleft/ProjectSP/tree/master/doc/Tpic1.png "Player moving on ground floor"
 
-The game is played in portrait mode
+The game is played in portrait mode.
 The avatar starts out moving at a constant speed from left to right. 
 When the avatar reaches the end of the screen, he automatically turns direction-> moving from right to left.
 
 
 ![player jumps][pic2]
-[pic2]: https://github.com/Nocookieleft/ProjectSP/doc/Tpic1.png "Player jumps to climb platform"
+[pic2]: https://github.com/Nocookieleft/ProjectSP/tree/master/doc/Tpic2.png "Player jumps to climb platform"
 
 As the player touches the screen, the avatar jumps. This way the player can 'climb' the platforms. His goal is to reach the highest platform possible and not fall from the screen.
 
 
 ![player bounces][pic3]
-[pic3]: https://github.com/Nocookieleft/ProjectSP/doc/Tpic3.png "Player bounces from block "
+[pic3]: https://github.com/Nocookieleft/ProjectSP/tree/master/doc/Tpic3.png "Player bounces from block "
 
 
 The avatar bounces back from both the borders of the screen, as well as the platforms above him (when timed poorly...). 
@@ -39,7 +39,7 @@ Soon the ground floor will dissapear, leaving a gap in which the player might fa
 
 
 ![player falls][pic4]
-[pic4]: https://github.com/Nocookieleft/ProjectSP/doc/Tpic4.png "Player falls - game ends"
+[pic4]: https://github.com/Nocookieleft/ProjectSP/tree/master/doc/Tpic4.png "Player falls - game ends"
 
 Should the player fall and there is no lower platform the player could land on (in other words: the player falls and disappears from the edge of the screen), the game ends. 
 
