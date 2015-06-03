@@ -44,8 +44,10 @@ class MovingLevel : SKSpriteNode {
     }
     
     func progress() {
+       // move the frame down over the screen and reset position to make illusion of neverending level
         let moveUp = SKAction.moveByX(0.0, y: -frame.size.height/2, duration: 2.0)
-        runAction(moveUp)
+        let resetPosition = SKAction.moveToY(0.0, duration: 0)
+        runAction(SKAction.sequence([moveUp, resetPosition]))
     }
 
     required init?(coder aDecoder: NSCoder) {

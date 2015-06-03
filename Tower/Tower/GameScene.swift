@@ -11,10 +11,17 @@ import SpriteKit
 class GameScene: SKScene {
     
     let player = SKSpriteNode(imageNamed:"Player")
+    let gravity = CGFloat(0.6)
+    var isStarted = false
     var towerLvl: Int = 1
     var level : MovingLevel!
     var toggleMove = true
-    var gameOver = false
+    var isOver = false
+    var isGrounded = true
+    var velocityY = CGFloat(0)
+    var playerBaseline = CGFloat(0)
+    
+    
 
     
     override func didMoveToView(view: SKView) {
@@ -27,12 +34,19 @@ class GameScene: SKScene {
         let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
         ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
         ground.zPosition = 2
+        self.playerBaseline = ground.position.y + (ground.size.height / 2) + (player.size.height / 2 )
+        
         addChild(ground)
         level = MovingLevel(size: CGSizeMake(view.frame.width, view.frame.height))
         level.position = view.center
         
         addChild(level)
 
+    }
+    
+    func start(){
+        isStarted = true
+        
     }
     
     func movePlayer(){
@@ -55,16 +69,29 @@ class GameScene: SKScene {
             //player.runAction(SKAction.repeatAction(actionMoveLeft, count: 1))
         }
         // change direction of avatar
-      //  toggleMove = !toggleMove
+       toggleMove = !toggleMove
         
 
+    }
+    
+    func jump(){
+        self.velocityY += self.gravity
+        player.position.y -= velocityY
+        
+        if (player.position.y < self.playerBaseline)
+        {
+            self.player.position.y = self.playerBaseline
+            velocityY = 0.0
+            self.isGrounded = true
+        }
+        
     }
     
     func constrainPlayer(){
         if (player.position.x > frame.size.width)
         {
             toggleMove = !toggleMove
-        }else if (player.position.x < 0)
+        }else if (player.position.x < (player.size.width / 2))
         {
             toggleMove = !toggleMove
         }
@@ -73,15 +100,32 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a player touches screen */
-        level.progress()
+        if (!isStarted)
+        {
+            start()
+        }else
+        {
+            if (self.isGrounded == true)
+            {
+                velocityY = -18
+                self.isGrounded = false
+            }
+        }
 
+    }
+    
+    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if (self.velocityY < -9.0)
+        {
+            self.velocityY = -9.0
+        }
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         movePlayer()
         constrainPlayer()
-        
+        jump()
         
     }
 }
