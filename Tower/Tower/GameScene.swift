@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    let player = SKSpriteNode(imageNamed:"Player")
+    let player = SKSpriteNode(imageNamed:"rebel")
     let gravity = CGFloat(0.6)
     var isStarted = false
     var towerLvl: Int = 1
@@ -34,10 +34,11 @@ class GameScene: SKScene {
         let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
         ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
         ground.zPosition = 2
+        
         self.playerBaseline = ground.position.y + (ground.size.height / 2) + (player.size.height / 2 )
         
         addChild(ground)
-        level = MovingLevel(size: CGSizeMake(view.frame.width, view.frame.height))
+        level = MovingLevel(size: CGSizeMake(size.width, view.frame.height))
         level.position = view.center
         
         addChild(level)
@@ -109,9 +110,9 @@ class GameScene: SKScene {
             {
                 velocityY = -18
                 self.isGrounded = false
+                level.progress()
             }
         }
-
     }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -126,6 +127,7 @@ class GameScene: SKScene {
         movePlayer()
         constrainPlayer()
         jump()
+       
         
     }
 }

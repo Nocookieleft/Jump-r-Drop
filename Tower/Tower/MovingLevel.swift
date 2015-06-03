@@ -18,7 +18,7 @@ class MovingLevel : SKSpriteNode {
     // make the height double size of the frame to extend it from the
     init(size: CGSize) {
         super.init(texture: nil, color: UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0), size: CGSizeMake(size.width, size.height * 2))
-        anchorPoint = CGPointMake(1, 1)
+        anchorPoint = CGPointMake(0, 0.5)
         
         for (var i = 0; i < NUMBER_OF_SEGMENTS; i++)
         {
