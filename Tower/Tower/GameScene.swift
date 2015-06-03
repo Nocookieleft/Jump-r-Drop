@@ -12,66 +12,76 @@ class GameScene: SKScene {
     
     let player = SKSpriteNode(imageNamed:"Player")
     var towerLvl: Int = 1
-    let floor = SKSpriteNode(imageNamed:"floor")
+    var level : MovingLevel!
+    var toggleMove = true
+    var gameOver = false
+
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        backgroundColor = SKColor.whiteColor()
+        /* Setup scene properties */
+        backgroundColor = UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
         // spawn player and setup properties
+        
         player.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
         addChild(player)
-        floor.position = CGPoint(x: size.width * 0.1, y: size.height * 0.05)
-        addChild(floor)
         let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
         ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
+        ground.zPosition = 2
         addChild(ground)
-        movePlayer()
+        level = MovingLevel(size: CGSizeMake(view.frame.width, view.frame.height))
+        level.position = view.center
+        
+        addChild(level)
+
     }
     
     func movePlayer(){
         let minX = player.size.width / 2
         let maxX = self.frame.size.width - player.size.width / 2
-        let actionMoveLeft = SKAction.moveByX(1.0, y: 0.0, duration: 2.0)
-      //  let actionMoveRight = SKAction.movebyX(+player.size.width/2, duration: 2.0)
         
-        // if player is positioned to the left of the center x
-        //if (player.position.x < maxX)
-        //{
-           player.runAction(SKAction.repeatActionForever(actionMoveLeft))
+        // move avatar horizontally by its size and in 0.5 sec
+        let actionMoveRight = SKAction.moveByX(player.size.width, y: 0, duration: 1)
+        let actionMoveLeft = SKAction.moveByX(-player.size.width, y: 0, duration: 1)
+        let actionWait = SKAction.waitForDuration(0.5)
         
-        //}
-        //player.runAction(actionMoveRight)
-//        
-//        if (player.position.x >= minX)
-//        {
-//            player.runAction(actionMoveRight)
-//        }
-//        
-//        //old
-//        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-//        myLabel.text = "Welcome to Tower!";
-//        myLabel.fontSize = 65;
-//        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-//        
-//        self.addChild(myLabel)
+        // let avatar move repeatedly
+        if (toggleMove == true)
+        {
+        //    player.runAction(SKAction.sequence([actionMoveRight, actionWait]))
+            player.runAction(actionMoveRight)
+        }else
+        {
+            player.runAction(SKAction.sequence([actionMoveLeft, actionWait]))
+            //player.runAction(SKAction.repeatAction(actionMoveLeft, count: 1))
+        }
+        // change direction of avatar
+      //  toggleMove = !toggleMove
+        
+
     }
     
-//    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-//        /* Called when a touch begins */
-//        
-//        for touch in (touches as! Set<UITouch>) {
-//            
-//                 .position = location
-//            
-//            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-//            
-//            sprite.runAction(SKAction.repeatActionForever(action))
-//            
-//            self.addChild(sprite)
-//        }
-//    }
+    func constrainPlayer(){
+        if (player.position.x > frame.size.width)
+        {
+            toggleMove = !toggleMove
+        }else if (player.position.x < 0)
+        {
+            toggleMove = !toggleMove
+        }
+    }
+    
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        /* Called when a player touches screen */
+        level.progress()
+
+    }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        movePlayer()
+        constrainPlayer()
+        
+        
     }
 }

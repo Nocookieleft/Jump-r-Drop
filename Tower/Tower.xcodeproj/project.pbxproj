@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7608891D1B1DD3A4009E7253 /* MovingLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7608891C1B1DD3A4009E7253 /* MovingLevel.swift */; };
 		76563DA51B1C95C00007254C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DA41B1C95C00007254C /* AppDelegate.swift */; };
 		76563DA71B1C95C00007254C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 76563DA61B1C95C00007254C /* GameScene.sks */; };
 		76563DA91B1C95C00007254C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DA81B1C95C00007254C /* GameScene.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7608891C1B1DD3A4009E7253 /* MovingLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovingLevel.swift; sourceTree = "<group>"; };
 		76563D9F1B1C95C00007254C /* Tower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76563DA31B1C95C00007254C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76563DA41B1C95C00007254C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				76563DA61B1C95C00007254C /* GameScene.sks */,
 				76563DCA1B1CB6610007254C /* Player.swift */,
 				76563DA81B1C95C00007254C /* GameScene.swift */,
+				7608891C1B1DD3A4009E7253 /* MovingLevel.swift */,
 				76563DAA1B1C95C00007254C /* GameViewController.swift */,
 				76563DAC1B1C95C00007254C /* Main.storyboard */,
 				76563DAF1B1C95C00007254C /* Images.xcassets */,
@@ -226,6 +229,7 @@
 				76563DA91B1C95C00007254C /* GameScene.swift in Sources */,
 				76563DAB1B1C95C00007254C /* GameViewController.swift in Sources */,
 				76563DA51B1C95C00007254C /* AppDelegate.swift in Sources */,
+				7608891D1B1DD3A4009E7253 /* MovingLevel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +425,7 @@
 				76563DC41B1C95C00007254C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		76563DC51B1C95C00007254C /* Build configuration list for PBXNativeTarget "TowerTests" */ = {
 			isa = XCConfigurationList;
@@ -429,6 +434,7 @@
 				76563DC71B1C95C00007254C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -12,6 +12,8 @@ Features
 - live action with touch interface 
 - pervasive highscores
 
+
+
 Design
 ------
 
@@ -81,16 +83,14 @@ Potential Problems
 - reading SpriteKit class
 - working on a mechanism that renders a tile at a constant distance from another at a 'possible' place on the x-axis of the next 'y-row' ... 
 - work on a mechanism that checks which places are deemed possible places to input the tile 
+- try something completely different regarding the levels 
 
 
 
 Related content
 ---------------
-The game Crossy Road (based on the classic frogger) might help provide insights in the generation of sprites from outside of the game frame
-The game Doodle Jump seems to have quite similar gameplay
-
-
-(review similar applications / visualizations / features / technical aspects)
+The game Crossy Road (based on the classic frogger) might help provide insights in the generation of sprites from outside the game frame
+The game Doodle Jump seems to have quite similar gameplay. In this game you need to progress vertically over the levels by jumping from platform to platform as well. The difference here is that the avatar automatically jumps when it hits a platform. Doodle Jump also uses the gyroscope in the phone to steer the avatar in the desired direction. The avatar here can move to platforms as well and can move off the left and right edges of the screen to appear on the opposite side again. Doodle Jump is far more advanced game that handles nice graphics and a range of aspects (like enemies/fiends the player should avoid and bonus items the player should try to get) that this game will not include. The scope of this project is limited, as trying to make a first iOS game in more or less two weeks proves challenging enough. 
 
 
 
