@@ -48,7 +48,8 @@ Should the player fall and there is no lower platform the player could land on (
 Classes
 -------
 
-- GameScene:
+GameScene:
+
 
  a view that contains the game loop. It checks the game state and updates all sprites that are used (ie player, platform). Not completely sure if the actions of the sprites will be defined in here or are moved to their own class. 
 actions:
@@ -58,7 +59,8 @@ actions:
 + update()
 
 
- - Player:
+
+ Player:
 
  a SpriteNode class that contains properties of players avatar.
  if there is any time left, a simple animation might be implemented here.
@@ -73,7 +75,7 @@ actions:
 
 
 
- - MovingLevel:
+MovingLevel:
 
  a SpriteNode class that renders the background and the actions to let it move when the player advances through the game. This will be invoked by a sequence of moving the sprite of the level down and then resetting its position.
 actions:
