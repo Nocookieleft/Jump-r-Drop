@@ -1,4 +1,4 @@
-# Project SP Tower
+# Project SP Jump/Drop
 final project minor programming by Anna Dechering stdnr: 10288384
 
 a basic game based to exercise timing and hand-eye coordination while tackling boredom. 

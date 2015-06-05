@@ -1,4 +1,4 @@
-Design doc for Jump or Drop
+# Design doc for Jump or Drop
 
 Anna Dechering
 10288384
@@ -66,21 +66,23 @@ update()
  if there is any time left, a simple animation might be implemented here.
  actions to flip the avatar when it reaches the boundaries of the screen horizontally will be implemented here as well. 
  actions:
- isIdle(BOOL)
- isGrounded(BOOL)
- jump()
- move()
- update()
+ 
+ + isIdle(BOOL)
+ + isGrounded(BOOL)
+ + jump()
+ + move()
+ + update()
 
 
  - MovingLevel:
 
  a SpriteNode class that renders the background and the actions to let it move when the player advances through the game. This will be invoked by a sequence of moving the sprite of the level down and then resetting its position.
 actions:
-isMoving(BOOL)
-shouldProgress(BOOL)
-move()
-update()
+
++ isMoving(BOOL)
++ shouldProgress(BOOL)
++ move()
++ update()
 
 
 - Platform:
