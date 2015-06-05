@@ -154,10 +154,11 @@ class GameScene: SKScene {
 //        constrainPlayer()
         jump()
         scoreText.text = "Score: " + String(score)
-        if (level.shouldProgress() == true)
-        {
+//        if (level.shouldProgress() == true)
+//        {
             level.progress()
             score++
-        }
+//        }
     }
 }
+

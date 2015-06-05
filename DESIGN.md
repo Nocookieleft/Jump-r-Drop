@@ -56,11 +56,14 @@ actions:
 
 + isStarted(BOOL)
 + isOVer(BOOL)
++ start()
++ touchesBegan()
++ touchesEnded()
 + update()
 
 
 
- Player:
+Player:
 
  a SpriteNode class that contains properties of players avatar.
  if there is any time left, a simple animation might be implemented here.
@@ -87,13 +90,23 @@ actions:
 
 
 
-
-- Platform:
+Platform:
 
 a spriteNode class? with a dictionary of different sized platforms.
 at the moment the player progresses (jumps to the another platform) it should read a random value and choose a kind of platfom according to the number
  otherwise a dictionary with different sized platforms might suffice. In that case the MovingLevel class will call upon the platform dictionary to provide a sprite to render at the top of the screen
 
+
+
+
+
+Highscore:
+
+a view that pops up when the game is over, asking for the username and presenting the score of the current player along the highsore list. The highscores are presented by a table with a field for the username and a field for the score. 
+actions:
+
++ enteredName(BOOL)
++ update()
 
 
 
