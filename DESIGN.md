@@ -3,9 +3,6 @@
 Anna Dechering
 10288384
 
-
-Game
------
 a basic game based to exercise timing and hand-eye coordination while tackling boredom. 
 The player times the jumps of an avatar climbing a 2D tower with missing platforms. Should the player fall from the screen, the game ends. The higher the player might climb, the higher the score. 
 
@@ -55,9 +52,10 @@ Classes
 
  a view that contains the game loop. It checks the game state and updates all sprites that are used (ie player, platform). Not completely sure if the actions of the sprites will be defined in here or are moved to their own class. 
 actions:
-isStarted(BOOL)
-isOVer(BOOL)
-update()
+
++ isStarted(BOOL)
++ isOVer(BOOL)
++ update()
 
 
  - Player:
@@ -74,6 +72,7 @@ update()
  + update()
 
 
+
  - MovingLevel:
 
  a SpriteNode class that renders the background and the actions to let it move when the player advances through the game. This will be invoked by a sequence of moving the sprite of the level down and then resetting its position.
@@ -83,6 +82,8 @@ actions:
 + shouldProgress(BOOL)
 + move()
 + update()
+
+
 
 
 - Platform:
