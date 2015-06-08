@@ -7,12 +7,23 @@ a basic game based to exercise timing and hand-eye coordination while tackling b
 The player times the jumps of an avatar climbing a 2D tower with missing platforms. Should the player fall from the screen, the game ends. The higher the player might climb, the higher the score. 
 
 
+Minimal Viable Product
+----------------------
+Gameplay: 
 
-Features 
----------
-- single player gameplay
-- live action with touch interface 
-- pervasive highscores
+- player avatar able to move and jump 
+- platforms generating offscreen and moving onscreen
+- game ends at the moment the avatar moves offscreen
+
+
+
+
+Additional Features
+--------------------
+- highscores 
+- animation of player avatar
+- special platforms 
+
 
 
 

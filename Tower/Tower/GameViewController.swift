@@ -28,6 +28,10 @@ extension SKNode {
 
 class GameViewController: UIViewController {
 
+    var sWidth = CGFloat(0)
+    var sHeight = CGFloat(0)
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,23 +41,30 @@ class GameViewController: UIViewController {
             skView.showsFPS = true
             skView.showsNodeCount = true
             
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
+            /* render the portrait mode to set correct boundaries of scene */
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
+            didRotateFromInterfaceOrientation(UIInterfaceOrientation.Portrait)
+            scene.size = CGSize(width: sWidth, height: sHeight)
             scene.scaleMode = .AspectFill
             
             skView.presentScene(scene)
         }
     }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        sWidth = CGRectGetWidth(self.view.bounds)
+        sHeight = CGRectGetHeight(self.view.bounds)
+    }
 
     override func shouldAutorotate() -> Bool {
-        return true
+        return false
     }
 
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
+            return Int(UIInterfaceOrientationMask.Portrait.rawValue)
         } else {
             return Int(UIInterfaceOrientationMask.All.rawValue)
         }
