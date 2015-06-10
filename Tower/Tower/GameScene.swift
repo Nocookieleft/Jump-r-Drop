@@ -5,85 +5,137 @@
 //  Created by Evil Cookie on 01/06/15.
 //  Copyright (c) 2015 Evil Cookie. All rights reserved.
 //
-
+import Foundation
 import SpriteKit
 
-class GameScene: SKScene {
+
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var platformgenerator : PlatformGenerator!
     var player : Player? = nil
-    let gravity = CGFloat(0.6)
     let scoreText = SKLabelNode(fontNamed: "Muli")
+    var startLabel = SKLabelNode(fontNamed: "Montserrat")
     
+    var isOver = false
     var isStarted = false
     var level : MovingLevel!
-    var isOver = false
-    var playerBaseline = CGFloat(0)
     var score = 0
-    
+    var test = 0
     
 
-    
     override func didMoveToView(view: SKView) {
         /* Setup scene properties */
         backgroundColor = UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
-       
+      
+        // add ground of first level
+        platformgenerator = PlatformGenerator(color: UIColor.clearColor(), size: view.frame.size)
+        platformgenerator.position = CGPoint(x: 0, y: 0)
+        addChild(platformgenerator)
+                
         // spawn player and setup properties
-        player = Player(imageNamed: "Player")
-        player!.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
-        addChild(player!)
-        let ground = SKSpriteNode(color: UIColor.brownColor(), size: CGSize(width: size.width, height: 20))
-        ground.position = CGPoint(x: size.width/2, y: size.height * 0.05)
-        ground.zPosition = 2
-        addChild(ground)
+        spawnPlayer()
         
-        // determine the baseline of the player avatar and position the level
-        playerBaseline = ground.position.y + (ground.size.height / 2) + (player!.size.height / 2 )
         level = MovingLevel(size: CGSizeMake(view.frame.width, view.frame.height))
-        level.position = CGPoint(x: 0, y: 0)
+        level.position = CGPoint(x: 0, y: frame.size.height/2)
         addChild(level)
         
-        // position scorelabel with properties
+        // show a label that keeps score
+        spawnScoreLabel()
+        
+        // show a nice label at the start of the game
+        spawnStartLabel()
+        
+        // add physicsWorld
+        physicsWorld.contactDelegate = self
+        
+    }
+    
+    // in case delegate notices contact
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+    }
+    
+    
+    // spawn an avatar in the middle of the screen
+    func spawnPlayer(){
+        player = Player(imageNamed: "Player")
+        player!.position = CGPoint(x: size.width / 2, y: size.height * 0.1)
+        platformgenerator.populate(frame.size.width, playerHeight: player!.size.height , num: 9)
+        
+        
+        // determine the baseline of the player avatar and position the level
+        player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
+        player!.minX = player!.size.width
+        player!.maxX = self.frame.size.width - player!.size.width
+        player!.zPosition = 2
+        addChild(player!)
+        
+    }
+    
+    // show the score label at the top left of the screen 
+    func spawnScoreLabel(){
         scoreText.text = "Score: " + String(score)
         scoreText.fontSize = 20
         scoreText.fontColor = UIColor.blackColor()
         scoreText.position = CGPoint(x: size.width / 6, y: size.height * 0.9)
         scoreText.zPosition = 3
         addChild(scoreText)
+        
 
     }
     
-    // reset the x and y postion of the player according to baseline and borders of frame
-    func resetPlayer(){
-        let minX = player!.size.width 
-        let maxX = self.frame.size.width - player!.size.width
-        
-        if (player!.position.y < self.playerBaseline)
-        {
-            self.player!.position.y = self.playerBaseline
-            player!.ground()
-        }
-        
-        if (player!.position.x >= maxX)
-        {
-            player!.position.x = maxX
-            player!.turn()
-        }else if(player?.position.x <= minX)
-        {
-            player!.position.x = minX
-            player!.turn()
-        }
-        
+    func spawnStartLabel(){
+        startLabel.text = "Tap to Start Game"
+        startLabel.fontColor = UIColor(red: 0/255, green: 51/255, blue: 102/255, alpha: 1)
+        startLabel.zPosition = 10
+        startLabel.position = CGPoint(x: frame.size.width/2, y: frame.size.height * 0.7)
+        addChild(startLabel)
+
     }
     
-    
-    
+
     // change properties to let game start
     func start(){
+        startLabel.removeFromParent()
         player!.start()
+        level.start()
         isStarted = true
-        
+        platformgenerator.startGeneratingEvery(4)
+
     }
     
+    
+    
+    // stop all processes and move to the game over scene
+    func gameOver(){
+        isOver = true
+        player!.isIdle = true
+        platformgenerator.stopAll()
+        level.stop()
+        self.removeAllChildren()
+        
+        presentGameOverScene()
+
+    }
+    
+    // present the game over view
+    func presentGameOverScene(){
+        if let GOScene = GameOverScene(fileNamed: "GameOverScene") {
+        let GOView = view! as SKView
+            
+            GOScene.size = CGSizeMake(view!.frame.size.width, view!.frame.size.height)
+            /* Set the scale mode to scale to fit the window */
+            GOScene.scaleMode = .AspectFill
+            
+            GOView.presentScene(GOScene)
+            
+        }else
+        {
+            println("shit didn't happen")
+        }
+    
+    }
     
     
     // begin jump of player
@@ -95,6 +147,7 @@ class GameScene: SKScene {
         }else
         {
             player!.jump()
+            test++
         }
     }
     
@@ -105,10 +158,16 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        player!.update()
-        resetPlayer()
-        scoreText.text = "Score: " + String(score)
-        level.update()
+        if (test <= 3)
+        {
+            player!.update()
+            scoreText.text = "Score: " + String(score)
+            level.update()
+        }else
+        {
+            gameOver()
+
+        }
         
     }
 }

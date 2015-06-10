@@ -11,20 +11,36 @@ import Foundation
 import SpriteKit
 
 
-class Platform: SKSpriteNode {
+class Platform: SKShapeNode {
     
-    init(imageNamed: String) {
-        // render the platofrms by their image
-        let imageTexture = SKTexture(imageNamed: imageNamed)
-        super.init(texture: imageTexture, color: nil, size: imageTexture.size())
+    let PLATFORM_WIDTH : CGFloat = 100
+    
+    init(size: CGSize) {
+        // render the platforms by path
+        super.init()
+        let path = CGPathCreateWithRect(CGRect(x: 0, y: 0, width: size.width, height: size.height), nil)
+        self.path = path
+        self.fillColor = UIColor.brownColor()
         
         // use physicsbody to simulate gravity, should not happen for platforms
-        self.physicsBody = SKPhysicsBody(rectangleOfSize: imageTexture.size())
-        self.physicsBody?.dynamic = false
+        self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
+        self.physicsBody?.categoryBitMask = platformCategory
+        self.physicsBody?.contactTestBitMask = playerCategory
+        self.physicsBody?.affectedByGravity = false
+      //  self.physicsBody?.dynamic = false
         
         
     }
 
+    func startMoving(){
+        let moveUp = SKAction.moveByX(0, y: -kPlatformHeight , duration: 1.0)
+        runAction(SKAction.repeatActionForever(moveUp))
+    }
+    
+    func stopMoving(){
+        self.removeAllActions()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

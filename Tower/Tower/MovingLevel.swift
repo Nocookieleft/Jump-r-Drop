@@ -15,7 +15,7 @@ class MovingLevel : SKSpriteNode {
     let COLOR_ONE = UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
     let COLOR_TWO = UIColor(red: 153.0/255, green: 245.0/255, blue: 246.0/255.0, alpha: 1.0)
     
-    var isMoving = false
+    var isMoving = true
     var currentInterval = UInt32(0)
     var timeGapForNextLvl = UInt32(0)
     
@@ -23,7 +23,7 @@ class MovingLevel : SKSpriteNode {
     // make the height double size of the frame to extend it from the
     init(size: CGSize) {
         super.init(texture: nil, color: UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0), size: CGSizeMake(size.width, size.height * 2))
-        anchorPoint = CGPointMake(0, 0)
+        anchorPoint = CGPointMake(0.5, 0)
         
         for (var i = 0; i < NUMBER_OF_SEGMENTS; i++)
         {
@@ -40,7 +40,7 @@ class MovingLevel : SKSpriteNode {
             
             // position segments one after another stacking according to their number and size height
             let segment = SKSpriteNode(color: segmentColor, size: CGSizeMake(self.size.width, self.size.height / CGFloat(NUMBER_OF_SEGMENTS)))
-            segment.anchorPoint = CGPointMake(0, 0.5)
+            segment.anchorPoint = CGPointMake(0, 0)
             segment.position = CGPointMake(0, CGFloat(i) * segment.size.height)
             addChild(segment)
             
@@ -48,7 +48,13 @@ class MovingLevel : SKSpriteNode {
         
     }
 
+    // do stuff upon beginning of the game
+    func start(){
+        isMoving = false
+        progress()
+    }
     
+    // determine if the screen should 'move' or not
     func shouldProgress() -> Bool {
         if (isMoving == false)
         {
@@ -60,24 +66,33 @@ class MovingLevel : SKSpriteNode {
     
     func progress() {
        // move the frame down over the screen and reset position to make illusion of neverending level
-        let moveUp = SKAction.moveByX(0.0, y: -frame.size.height / 20 , duration: 1)
-
-        let resetPosition = SKAction.moveToY(0.0, duration: 1)
-        self.runAction(moveUp, completion: { () -> Void in
-            self.runAction(resetPosition, completion: { () -> Void in
-                self.progress})
-            })
-    
-        isMoving = true
+        
+        let adjustedDuration = NSTimeInterval(frame.size.height / kDefaultXtoMovePerSecond)
+        let moveUp = SKAction.moveByX(0.0, y: -frame.size.height / 2 , duration: adjustedDuration / 2)
+        let resetPosition = SKAction.moveToY(0.0, duration: 0.1)
+        
+        runAction(SKAction.repeatActionForever(SKAction.sequence([moveUp, resetPosition])))
+//        
+//        self.runAction(moveUp, completion: { () -> Void in
+//            self.runAction(resetPosition, completion: { () -> Void in
+//                self.progress})
+//            })
+//    
+       // isMoving = true
         
     }
     
+    func stop(){
+        self.removeAllActions()
+    }
+    
+    
     func update(){
-        if (shouldProgress() == true)
-        {
-            progress()
-        }
-        
+//        if (shouldProgress() == true)
+//        {
+//            progress()
+//        }
+//        
     }
     
 

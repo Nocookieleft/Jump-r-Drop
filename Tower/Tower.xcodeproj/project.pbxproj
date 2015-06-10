@@ -17,6 +17,9 @@
 		76563DB31B1C95C00007254C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76563DB11B1C95C00007254C /* LaunchScreen.xib */; };
 		76563DBF1B1C95C00007254C /* TowerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DBE1B1C95C00007254C /* TowerTests.swift */; };
 		76563DCB1B1CB6610007254C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76563DCA1B1CB6610007254C /* Player.swift */; };
+		76DBDB781B25E0E100A0E786 /* PlatformGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBDB771B25E0E100A0E786 /* PlatformGenerator.swift */; };
+		76ECA77A1B26FECF00EBF0AE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ECA7791B26FECF00EBF0AE /* Constants.swift */; };
+		76ECA77E1B2727AE00EBF0AE /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ECA77D1B2727AE00EBF0AE /* GameOverScene.swift */; };
 		76FE30111B21A8B100A04158 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FE30101B21A8B100A04158 /* Platform.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +48,9 @@
 		76563DBD1B1C95C00007254C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76563DBE1B1C95C00007254C /* TowerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerTests.swift; sourceTree = "<group>"; };
 		76563DCA1B1CB6610007254C /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		76DBDB771B25E0E100A0E786 /* PlatformGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformGenerator.swift; sourceTree = "<group>"; };
+		76ECA7791B26FECF00EBF0AE /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		76ECA77D1B2727AE00EBF0AE /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		76FE30101B21A8B100A04158 /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,10 +96,12 @@
 				76563DA41B1C95C00007254C /* AppDelegate.swift */,
 				76563DA61B1C95C00007254C /* GameScene.sks */,
 				76563DCA1B1CB6610007254C /* Player.swift */,
+				76ECA7791B26FECF00EBF0AE /* Constants.swift */,
 				76563DA81B1C95C00007254C /* GameScene.swift */,
 				7608891C1B1DD3A4009E7253 /* MovingLevel.swift */,
 				76563DAA1B1C95C00007254C /* GameViewController.swift */,
-				76FE30101B21A8B100A04158 /* Platform.swift */,
+				76ECA77D1B2727AE00EBF0AE /* GameOverScene.swift */,
+				76DBDB791B25E35B00A0E786 /* Platform Generation */,
 				76563DAC1B1C95C00007254C /* Main.storyboard */,
 				76563DAF1B1C95C00007254C /* Images.xcassets */,
 				76563DB11B1C95C00007254C /* LaunchScreen.xib */,
@@ -125,6 +133,15 @@
 				76563DBD1B1C95C00007254C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		76DBDB791B25E35B00A0E786 /* Platform Generation */ = {
+			isa = PBXGroup;
+			children = (
+				76DBDB771B25E0E100A0E786 /* PlatformGenerator.swift */,
+				76FE30101B21A8B100A04158 /* Platform.swift */,
+			);
+			name = "Platform Generation";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +250,10 @@
 				76563DA91B1C95C00007254C /* GameScene.swift in Sources */,
 				76563DAB1B1C95C00007254C /* GameViewController.swift in Sources */,
 				76563DA51B1C95C00007254C /* AppDelegate.swift in Sources */,
+				76DBDB781B25E0E100A0E786 /* PlatformGenerator.swift in Sources */,
 				7608891D1B1DD3A4009E7253 /* MovingLevel.swift in Sources */,
+				76ECA77E1B2727AE00EBF0AE /* GameOverScene.swift in Sources */,
+				76ECA77A1B26FECF00EBF0AE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
