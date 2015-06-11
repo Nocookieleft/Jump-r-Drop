@@ -15,19 +15,21 @@ class Platform: SKShapeNode {
     
     let PLATFORM_WIDTH : CGFloat = 100
     
+    
     init(size: CGSize) {
         // render the platforms by path
         super.init()
         let path = CGPathCreateWithRect(CGRect(x: 0, y: 0, width: size.width, height: size.height), nil)
         self.path = path
         self.fillColor = UIColor.brownColor()
+
         
         // use physicsbody to simulate gravity, should not happen for platforms
-        self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         self.physicsBody?.categoryBitMask = platformCategory
         self.physicsBody?.contactTestBitMask = playerCategory
         self.physicsBody?.affectedByGravity = false
-      //  self.physicsBody?.dynamic = false
+        self.physicsBody?.dynamic = false
         
         
     }

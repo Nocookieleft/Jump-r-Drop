@@ -26,7 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     override func didMoveToView(view: SKView) {
         /* Setup scene properties */
-        backgroundColor = UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+        backgroundColor = kColorLightBlue
       
         // add ground of first level
         platformgenerator = PlatformGenerator(color: UIColor.clearColor(), size: view.frame.size)
@@ -53,16 +53,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // in case delegate notices contact
     func didBeginContact(contact: SKPhysicsContact) {
+        let position = contact.bodyB.area
+        println("contact")
+        player!.resetBaseLine(position)
+        player!.isGrounded = true
         
+    }
+    
+    
+    func didEndContact(contact: SKPhysicsContact) {
+        println("over")
     }
     
     
     // spawn an avatar in the middle of the screen
     func spawnPlayer(){
-        player = Player(imageNamed: "Player")
+        player = Player(imageNamed: "bulldozer")
         player!.position = CGPoint(x: size.width / 2, y: size.height * 0.1)
         platformgenerator.populate(frame.size.width, playerHeight: player!.size.height , num: 9)
-        
         
         // determine the baseline of the player avatar and position the level
         player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
@@ -121,15 +129,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // present the game over view
     func presentGameOverScene(){
-        if let GOScene = GameOverScene(fileNamed: "GameOverScene") {
-        let GOView = view! as SKView
+        
+        if let GOScene = GameOverScene.unarchiveFromFile("GameOverScene") as? GameOverScene {
             
-            GOScene.size = CGSizeMake(view!.frame.size.width, view!.frame.size.height)
+            let GOView = self.view! as SKView
+            
+            GOScene.size = CGSizeMake(view!.bounds.size.width, view!.bounds.size.height)
             /* Set the scale mode to scale to fit the window */
             GOScene.scaleMode = .AspectFill
             
             GOView.presentScene(GOScene)
-            
         }else
         {
             println("shit didn't happen")
@@ -153,12 +162,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         // slow down player jump
-        player!.slowDown()
+        player!.slowDownJump()
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        if (test <= 3)
+        if (test <= 7)
         {
             player!.update()
             scoreText.text = "Score: " + String(score)

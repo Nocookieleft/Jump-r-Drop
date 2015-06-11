@@ -17,7 +17,7 @@ class Player : SKSpriteNode {
     var gravity = CGFloat(0.6)
     var isFacingRight = true
     var scaleX = CGFloat(1.0)
-    var baseLine = CGFloat(1)
+    var baseLine = CGFloat(0)
     var minX = kMinX
     var maxX = kMaxX
     var isIdle = false
@@ -25,11 +25,11 @@ class Player : SKSpriteNode {
     init(imageNamed: String) {
        // render 
         let imageTexture = SKTexture(imageNamed: imageNamed)
-        super.init(texture: imageTexture, color: nil, size: imageTexture.size())
+        super.init(texture: imageTexture, color: nil, size: CGSizeMake(kPlayerHeight, kPlayerHeight))
         
         
         // use physicsbody to simulate gravity and stuff on player avatar
-        loadPhysicsBody(imageTexture.size())
+        loadPhysicsBody(CGSizeMake(kPlayerHeight, kPlayerHeight - 10 ))
         
     }
     
@@ -40,6 +40,8 @@ class Player : SKSpriteNode {
         self.physicsBody?.categoryBitMask = playerCategory
         self.physicsBody?.contactTestBitMask = platformCategory
         self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.restitution = 1
+        
 
     }
     
@@ -72,6 +74,10 @@ class Player : SKSpriteNode {
     }
     
     
+    func resetBaseLine(newPosition: CGFloat){
+        baseLine = newPosition + kPlatformHeight 
+    }
+    
     // flip the avatar horizontally when bumping into the frame boundaries
     func turn(){
     
@@ -96,15 +102,17 @@ class Player : SKSpriteNode {
     func ground(){
         
         velocityY = 0.0
+        velocityX = self.size.width/6
         self.isGrounded = true
     }
     
     
-    // begin avatar jump if player is on the
+    // begin avatar jump if player is on the ground
     func jump(){
         if (self.isGrounded == true)
         {
-            velocityY = -12
+            velocityY = -10
+            velocityX - 2
             isGrounded = false
         }
 
@@ -122,33 +130,12 @@ class Player : SKSpriteNode {
             })
     }
     
-        // move avatar horizontally by its
-//        let actionMoveRight = SKAction.moveByX(velocityX, y: 0, duration: 0.5)
-//        let actionMoveLeft = SKAction.moveByX(-velocityX, y: 0, duration: 0.5)
-//        let actionWait = SKAction.waitForDuration(0.5)
-//        
-//        
-        //let avatar move repeatedly
-//        
-//        if (isFacingRight == true)
-//        {
-//         //   runAction(SKAction.sequence([actionMoveRight, actionWait]))
-//            self.runAction(actionMoveRight, completion: { () -> Void in
-//                self.runAction(actionWait)
-//            })
-//        }else
-//        {
-//           // runAction(SKAction.sequence([actionMoveLeft, actionWait]))
-//            self.runAction(actionMoveLeft, completion: { () -> Void in
-//                self.runAction(actionWait)
-//            })
-//            
-//        }
+    
 
     
     // set variables at starting point
     func start(){
-        velocityX = self.size.width/4
+        velocityX = self.size.width/6
     }
     
     func stop(){
@@ -157,10 +144,11 @@ class Player : SKSpriteNode {
     
     
     // make avatar slow down jumping animation
-    func slowDown(){
+    func slowDownJump(){
         if (self.velocityY < -6.0)
         {
             self.velocityY = -6.0
+            self.velocityX + 2
         }
     }
     
@@ -169,10 +157,10 @@ class Player : SKSpriteNode {
     func update(){
         if (isIdle == false)
         {
-        self.velocityY += self.gravity
-        self.position.y -= velocityY
-        self.move()
-        self.constrainPosition()
+            self.velocityY += self.gravity
+            self.position.y -= velocityY
+            self.move()
+            self.constrainPosition()
         }
         else
         {

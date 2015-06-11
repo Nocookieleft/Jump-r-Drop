@@ -16,6 +16,14 @@ let kDefaultXtoMovePerSecond : CGFloat = 30.0
 let kMinX: CGFloat = 27.0
 let kMaxX: CGFloat = 348.0
 let kPlatformHeight: CGFloat = 20.0
+let kPlayerHeight : CGFloat = 40.0
+
+
+// colors
+let kColorLightBlue : UIColor = UIColor(red: 204.0/255.0, green: 245.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+let kColorDarkBlue: UIColor = UIColor(red: 153.0/255, green: 245.0/255, blue: 246.0/255.0, alpha: 1.0)
+let kColorDeepDarkBlue : UIColor = UIColor(red: 0/255, green: 51/255, blue: 102/255, alpha: 1.0)
+
 
 
 // categories
