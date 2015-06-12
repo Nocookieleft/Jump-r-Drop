@@ -39,7 +39,7 @@ class GameOverScene : SKScene {
         NGButton.fontColor = kColorDeepDarkBlue
         NGButton.fontSize = (GOMessage.fontSize * 0.8)
         NGButton.text = "New Game"
-        NGButton.position = CGPointMake(menuNode.position.x, menuNode.position.y * 0.8)
+        NGButton.position = CGPointMake(menuNode.position.x, (buttonNode.position.y - 6))
         addChild(NGButton)
     
         

@@ -25,23 +25,22 @@ class PlatformGenerator : SKSpriteNode {
         platformGround.zPosition = 2
         addChild(platformGround)
         
-        var i = 1
         var formerX = CGFloat(0)
         
-        for (i ; i < num; i++)
+        for (var i = 0 ; i < num; i++)
         {
             // populate the screen with platforms spaced some platformheight from eachother
             // and at a random position horizontally within the bounds of the screen
             var otherY = CGFloat(i) * kPlatformHeight
             let platform = Platform(size: CGSizeMake(PLATFORM_WIDTH, kPlatformHeight))
             let x = CGFloat(arc4random_uniform(UInt32(groundWidth)))
-            let y = otherY * 2 + kPlayerHeight 
+            let y = otherY * 2 + (kPlayerHeight * 2)
            
             // if a platform is about to be positioned at the same x as the one before it,
             // give the platform another position
             if (formerX == x)
             {
-                platform.position = CGPoint(x: x + (PLATFORM_WIDTH/2) , y: y)
+                platform.position = CGPoint(x: x + PLATFORM_WIDTH % kMaxX, y: y)
             }
             else
             {
@@ -51,6 +50,7 @@ class PlatformGenerator : SKSpriteNode {
             platform.zPosition = 2
             formerX = x
             addChild(platform)
+            
         }
     }
     

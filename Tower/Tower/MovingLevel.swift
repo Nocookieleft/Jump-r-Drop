@@ -9,9 +9,17 @@
 import Foundation
 import SpriteKit
 
+
+
+
 class MovingLevel : SKSpriteNode {
     
     let NUMBER_OF_SEGMENTS = 20
+   
+    // time stuff
+    var delta = NSTimeInterval(0)
+    var last_update_time = NSTimeInterval(0)
+ 
     var isMoving = true
     
     
@@ -42,6 +50,7 @@ class MovingLevel : SKSpriteNode {
         }
         
     }
+    
 
     // do stuff upon beginning of the game
     func start(){
@@ -83,12 +92,13 @@ class MovingLevel : SKSpriteNode {
     }
     
     
-    func update(){
-//        if (shouldProgress() == true)
-//        {
-//            progress()
-//        }
-//        
+    func update(currentTime: CFTimeInterval){
+        
+        self.delta = currentTime - last_update_time
+        self.last_update_time = currentTime
+        
+
+        
     }
     
 

@@ -102,7 +102,7 @@ class Player : SKSpriteNode {
     func ground(){
         
         velocityY = 0.0
-        velocityX = self.size.width/6
+       // velocityX = self.size.width/6
         self.isGrounded = true
     }
     
@@ -136,6 +136,7 @@ class Player : SKSpriteNode {
     // set variables at starting point
     func start(){
         velocityX = self.size.width/6
+        
     }
     
     func stop(){

@@ -12,16 +12,23 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    // nodes with sprites
     var platformgenerator : PlatformGenerator!
     var player : Player? = nil
     let scoreText = SKLabelNode(fontNamed: "Muli")
     var startLabel = SKLabelNode(fontNamed: "Montserrat")
+    let treshold = SKSpriteNode()
     
+    
+    // game cycle variables
     var isOver = false
     var isStarted = false
     var level : MovingLevel!
     var score = 0
     var test = 0
+    
+    
+    
     
 
     override func didMoveToView(view: SKView) {
@@ -53,10 +60,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // in case delegate notices contact
     func didBeginContact(contact: SKPhysicsContact) {
-        let position = contact.bodyB.area
-        println("contact")
-        player!.resetBaseLine(position)
-        player!.isGrounded = true
+        if isStarted 
+        {
+            let position = contact.bodyB.area
+            println("contact")
+            player!.resetBaseLine(position)
+            player!.isGrounded = true
+        }
         
     }
     
@@ -66,13 +76,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    func loadTreshold(){
+        treshold.color = UIColor.redColor()
+        treshold.size = CGSize(width: view!.frame.size.width, height: 10)
+        treshold.position = CGPointMake(0, view!.center.y)
+        addChild(treshold)
+    }
+    
+    
     // spawn an avatar in the middle of the screen
     func spawnPlayer(){
         player = Player(imageNamed: "bulldozer")
         player!.position = CGPoint(x: size.width / 2, y: size.height * 0.1)
         platformgenerator.populate(frame.size.width, playerHeight: player!.size.height , num: 9)
         
-        // determine the baseline of the player avatar and position the level
+        // determine the baseline of the player avatar and position the level)
         player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
         player!.minX = player!.size.width
         player!.maxX = self.frame.size.width - player!.size.width
@@ -127,6 +145,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    
+    
     // present the game over view
     func presentGameOverScene(){
         
@@ -160,18 +180,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    
+    
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         // slow down player jump
         player!.slowDownJump()
     }
    
+    
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        
         if (test <= 7)
         {
             player!.update()
             scoreText.text = "Score: " + String(score)
-            level.update()
+            level.update(currentTime)
         }else
         {
             gameOver()
