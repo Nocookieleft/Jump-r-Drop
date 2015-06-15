@@ -53,19 +53,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // show a nice label at the start of the game
         spawnStartLabel()
         
+        // load the treshold in the middle of the screen
+        loadTreshold()
+        
         // add physicsWorld
         physicsWorld.contactDelegate = self
         
     }
     
-    // in case delegate notices contact
+    
+    // in case contact with two physics bodies are 
     func didBeginContact(contact: SKPhysicsContact) {
         if isStarted 
         {
-            let position = contact.bodyB.area
-            println("contact")
-            player!.resetBaseLine(position)
-            player!.isGrounded = true
+            let collision = (contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask)
+            
+            if (collision == (playerCategory | tresholdCategory))
+            {
+                
+                println("contact with treshold")
+                score++
+            }
+            else if (collision == (playerCategory | platformCategory))
+            {
+                let position = contact.bodyB.area
+                println("contact")
+                player!.resetBaseLine(position)
+                player!.isGrounded = true
+                
+            }
+           
         }
         
     }
@@ -78,9 +95,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func loadTreshold(){
         treshold.color = UIColor.redColor()
-        treshold.size = CGSize(width: view!.frame.size.width, height: 10)
-        treshold.position = CGPointMake(0, view!.center.y)
+        treshold.size = CGSize(width: view!.frame.size.width * 2, height: 10)
+        treshold.position = CGPointMake(kMinX, view!.center.y/2)
+        treshold.zPosition = 2
+        
+        treshold.physicsBody = SKPhysicsBody(rectangleOfSize: treshold.size)
+        treshold.physicsBody?.dynamic = false
+        treshold.physicsBody?.collisionBitMask = 0
+        treshold.physicsBody?.categoryBitMask = tresholdCategory
+        treshold.physicsBody?.contactTestBitMask = playerCategory
+
         addChild(treshold)
+        
+        
     }
     
     
@@ -94,7 +121,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
         player!.minX = player!.size.width
         player!.maxX = self.frame.size.width - player!.size.width
-        player!.zPosition = 2
+        player!.zPosition = 3
         addChild(player!)
         
     }
@@ -193,10 +220,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         /* Called before each frame is rendered */
         
         
-        if (test <= 7)
+        if (test <= 9)
         {
             player!.update()
-            scoreText.text = "Score: " + String(score)
+            scoreText.text = "Score: \(score) "
             level.update(currentTime)
         }else
         {

@@ -38,7 +38,8 @@ class Player : SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.categoryBitMask = playerCategory
-        self.physicsBody?.contactTestBitMask = platformCategory
+        self.physicsBody?.contactTestBitMask = platformCategory | tresholdCategory
+        
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.restitution = 1
         
