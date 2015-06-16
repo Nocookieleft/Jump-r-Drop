@@ -19,7 +19,7 @@ class MovingLevel : SKSpriteNode {
     // time stuff
     var delta = NSTimeInterval(0)
     var last_update_time = NSTimeInterval(0)
- 
+    
     var isMoving = true
     
     
@@ -55,48 +55,33 @@ class MovingLevel : SKSpriteNode {
     // do stuff upon beginning of the game
     func start(){
         isMoving = false
-        progress()
+        moveBG()
     }
     
-    // determine if the screen should 'move' or not
-    func shouldProgress() -> Bool {
-        
-        if isMoving {
-            return false
-        } else {
-            return true
-        }
+
     
-    }
-    
-    func progress() {
-       // move the frame down over the screen and reset position to make illusion of neverending level
-        
+    // move the frame down over the screen and reset position to make illusion of neverending level
+    func moveBG() {
         let adjustedDuration = NSTimeInterval(frame.size.height / kDefaultXtoMovePerSecond)
-        let moveUp = SKAction.moveByX(0.0, y: -frame.size.height / 2 , duration: adjustedDuration / 2)
-        let resetPosition = SKAction.moveToY(0.0, duration: 0.1)
-        
+        let moveUp = SKAction.moveByX(0.0, y: -frame.size.height / 2 , duration: adjustedDuration/2)
+        let resetPosition = SKAction.moveToY(0.0, duration: 0.0)
         runAction(SKAction.repeatActionForever(SKAction.sequence([moveUp, resetPosition])))
-//        
-//        self.runAction(moveUp, completion: { () -> Void in
-//            self.runAction(resetPosition, completion: { () -> Void in
-//                self.progress})
-//            })
-//    
-       // isMoving = true
-        
     }
     
+    
+    // stop all actions on this sprite
     func stop(){
         self.removeAllActions()
     }
     
     
+    
+    
     func update(currentTime: CFTimeInterval){
-        
-        self.delta = currentTime - last_update_time
-        self.last_update_time = currentTime
-        
+  
+//        self.delta = currentTime - last_update_time
+//        self.last_update_time = currentTime
+//        
 
         
     }

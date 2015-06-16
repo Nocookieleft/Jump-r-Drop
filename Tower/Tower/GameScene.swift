@@ -13,11 +13,13 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // nodes with sprites
+    var background : SKNode!
     var platformgenerator : PlatformGenerator!
     var player : Player? = nil
     let scoreText = SKLabelNode(fontNamed: "Muli")
-    var startLabel = SKLabelNode(fontNamed: "Montserrat")
-    let treshold = SKSpriteNode()
+    var startLabel = SKLabelNode(fontNamed: "Noteworthy")
+    let upperTreshold = SKSpriteNode()
+    let lowerTreshold = SKSpriteNode()
     
     
     // game cycle variables
@@ -26,7 +28,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var level : MovingLevel!
     var score = 0
     var test = 0
-    
     
     
     
@@ -39,12 +40,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platformgenerator = PlatformGenerator(color: UIColor.clearColor(), size: view.frame.size)
         platformgenerator.position = CGPoint(x: 0, y: 0)
         addChild(platformgenerator)
+        
+        // add ground and platforms to level
+        platformgenerator.addGround(frame.size.width)
+     //   platformgenerator.populate(frame.size.width, num: 8)
                 
         // spawn player and setup properties
         spawnPlayer()
         
         level = MovingLevel(size: CGSizeMake(view.frame.width, view.frame.height))
-        level.position = CGPoint(x: 0, y: frame.size.height/2)
+        level.position = CGPoint(x: 0, y: 0)
         addChild(level)
         
         // show a label that keeps score
@@ -54,7 +59,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spawnStartLabel()
         
         // load the treshold in the middle of the screen
-        loadTreshold()
+        loadTresholds()
+        
+        // load the boundary of the screen
+        loadBoundary()
         
         // add physicsWorld
         physicsWorld.contactDelegate = self
@@ -62,25 +70,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    // in case contact with two physics bodies are 
+    // in case contact with two physics bodies are colliding with each other, start moving the screen
     func didBeginContact(contact: SKPhysicsContact) {
         if isStarted 
         {
             let collision = (contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask)
-            
-            if (collision == (playerCategory | tresholdCategory))
-            {
-                
-                println("contact with treshold")
-                score++
-            }
-            else if (collision == (playerCategory | platformCategory))
+
+            if (collision == (playerCategory | platformCategory))
             {
                 let position = contact.bodyB.area
-                println("contact")
                 player!.resetBaseLine(position)
                 player!.isGrounded = true
                 
+            }else if (collision == (playerCategory | upperTresholdCategory))
+            {
+                platformgenerator.startMovingAll()
+                
+            }else if (collision == (playerCategory | lowerTresholdCategory))
+            {
+                platformgenerator.stopAll()
+                
+            }else if (collision == (playerCategory | bottomCategory))
+            {
+                gameOver()
             }
            
         }
@@ -88,25 +100,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+    // show when contact is over
     func didEndContact(contact: SKPhysicsContact) {
-        println("over")
+      //  println("over")
+
+    }
+    
+    // load an invisible barrier in the screen with physicsbody to check progress of player
+    func loadTresholds(){
+        upperTreshold.color = UIColor.redColor()
+        upperTreshold.size = CGSize(width: view!.frame.size.width * 2, height: 10)
+        upperTreshold.position = CGPointMake(kMinX, view!.center.y * 1.2)
+        upperTreshold.zPosition = 2
+        
+        // set physics forces to flag contact with player its avatar, set collision only to itself
+        upperTreshold.physicsBody = SKPhysicsBody(rectangleOfSize: upperTreshold.size)
+        upperTreshold.physicsBody?.dynamic = false
+        upperTreshold.physicsBody?.categoryBitMask = upperTresholdCategory
+        upperTreshold.physicsBody?.contactTestBitMask = playerCategory
+        upperTreshold.physicsBody?.collisionBitMask = upperTresholdCategory
+        addChild(upperTreshold)
+        
+        lowerTreshold.color = UIColor.yellowColor()
+        lowerTreshold.size = upperTreshold.size
+        lowerTreshold.position = CGPointMake(kMinX, view!.center.y * 0.4)
+        //        treshold.position = convertPoint(CGPoint(x: kMinX, y: view!.center.y * 0.8),  toNode: level!)
+        lowerTreshold.zPosition = 2
+        
+        // set physics forces to flag contact with player its avatar, set collision only to itself
+        lowerTreshold.physicsBody = SKPhysicsBody(rectangleOfSize: lowerTreshold.size)
+        lowerTreshold.physicsBody?.dynamic = false
+        lowerTreshold.physicsBody?.categoryBitMask = lowerTresholdCategory
+        lowerTreshold.physicsBody?.contactTestBitMask = playerCategory
+        lowerTreshold.physicsBody?.collisionBitMask = lowerTresholdCategory
+        addChild(lowerTreshold)
+        
     }
     
     
-    func loadTreshold(){
-        treshold.color = UIColor.redColor()
-        treshold.size = CGSize(width: view!.frame.size.width * 2, height: 10)
-        treshold.position = CGPointMake(kMinX, view!.center.y/2)
-        treshold.zPosition = 2
-        
-        treshold.physicsBody = SKPhysicsBody(rectangleOfSize: treshold.size)
-        treshold.physicsBody?.dynamic = false
-        treshold.physicsBody?.collisionBitMask = 0
-        treshold.physicsBody?.categoryBitMask = tresholdCategory
-        treshold.physicsBody?.contactTestBitMask = playerCategory
-
-        addChild(treshold)
-        
+    // set the boundary of the screen to detect if the avatar falls
+    func loadBoundary(){
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: size.width * 2, height: size.height))
+        physicsBody?.categoryBitMask = bottomCategory
+        physicsBody?.contactTestBitMask = playerCategory
+        physicsBody?.collisionBitMask = playerCategory
         
     }
     
@@ -115,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func spawnPlayer(){
         player = Player(imageNamed: "bulldozer")
         player!.position = CGPoint(x: size.width / 2, y: size.height * 0.1)
-        platformgenerator.populate(frame.size.width, playerHeight: player!.size.height , num: 9)
+        
         
         // determine the baseline of the player avatar and position the level)
         player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
@@ -138,6 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    // show a message on the screen before game starts
     func spawnStartLabel(){
         startLabel.text = "Tap to Start Game"
         startLabel.fontColor = UIColor(red: 0/255, green: 51/255, blue: 102/255, alpha: 1)
@@ -154,7 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player!.start()
         level.start()
         isStarted = true
-        platformgenerator.startGeneratingEvery(4)
+        platformgenerator.startGen2()
 
     }
     
@@ -163,7 +201,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // stop all processes and move to the game over scene
     func gameOver(){
         isOver = true
-        player!.isIdle = true
+        player!.isAlive = false
         platformgenerator.stopAll()
         level.stop()
         self.removeAllChildren()
@@ -171,7 +209,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         presentGameOverScene()
 
     }
-    
     
     
     // present the game over view
@@ -200,7 +237,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (!isStarted)
         {
             start()
-        }else
+        }else if (player!.isAlive)
         {
             player!.jump()
             test++
@@ -213,18 +250,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // slow down player jump
         player!.slowDownJump()
     }
-   
+    
     
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        
-        if (test <= 9)
+        if (player!.isAlive == true)
         {
             player!.update()
             scoreText.text = "Score: \(score) "
             level.update(currentTime)
+            
         }else
         {
             gameOver()

@@ -20,13 +20,12 @@ class Player : SKSpriteNode {
     var baseLine = CGFloat(0)
     var minX = kMinX
     var maxX = kMaxX
-    var isIdle = false
+    var isAlive = true
     
     init(imageNamed: String) {
        // render 
         let imageTexture = SKTexture(imageNamed: imageNamed)
         super.init(texture: imageTexture, color: nil, size: CGSizeMake(kPlayerHeight, kPlayerHeight))
-        
         
         // use physicsbody to simulate gravity and stuff on player avatar
         loadPhysicsBody(CGSizeMake(kPlayerHeight, kPlayerHeight - 10 ))
@@ -38,10 +37,12 @@ class Player : SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.categoryBitMask = playerCategory
-        self.physicsBody?.contactTestBitMask = platformCategory | tresholdCategory
+        self.physicsBody?.contactTestBitMask = platformCategory | upperTresholdCategory | lowerTresholdCategory | bottomCategory
+        self.physicsBody?.collisionBitMask = playerCategory | platformCategory
         
-        self.physicsBody?.affectedByGravity = false
-        self.physicsBody?.restitution = 1
+        self.physicsBody?.affectedByGravity = true
+        self.physicsBody?.restitution = 0.5
+        self.physicsBody?.friction = 0.4
         
 
     }
@@ -51,6 +52,9 @@ class Player : SKSpriteNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    
     
     // constrain player position when landed on ground or hit frame boundaries
     func constrainPosition(){
@@ -76,7 +80,8 @@ class Player : SKSpriteNode {
     
     
     func resetBaseLine(newPosition: CGFloat){
-        baseLine = newPosition + kPlatformHeight 
+        
+        baseLine = newPosition + kPlatformHeight
     }
     
     // flip the avatar horizontally when bumping into the frame boundaries
@@ -102,7 +107,7 @@ class Player : SKSpriteNode {
     // stop jumping of the player
     func ground(){
         
-        velocityY = 0.0
+//        velocityY = 0.0
        // velocityX = self.size.width/6
         self.isGrounded = true
     }
@@ -112,8 +117,12 @@ class Player : SKSpriteNode {
     func jump(){
         if (self.isGrounded == true)
         {
-            velocityY = -10
-            velocityX - 2
+            let velocity_x = self.physicsBody?.velocity.dx
+            let velocity_y = self.physicsBody?.velocity.dy
+            
+            self.physicsBody?.applyImpulse(CGVectorMake(velocity_x!, 30))
+//            velocityY = -10
+//            velocityX - 2
             isGrounded = false
         }
 
@@ -124,7 +133,6 @@ class Player : SKSpriteNode {
     func move(){
         
         let actionWait = SKAction.waitForDuration(0.1)
-        
         let repostion = SKAction.moveByX(scaleX * (velocityX), y: 0, duration: 0.1)
         self.runAction(repostion, completion: { () -> Void in
             self.runAction(actionWait)
@@ -136,12 +144,15 @@ class Player : SKSpriteNode {
     
     // set variables at starting point
     func start(){
-        velocityX = self.size.width/6
+        velocityX = self.size.width/8
         
     }
     
+    // stop all actions of the avatar and remove its node
     func stop(){
         self.removeAllActions()
+        self.removeFromParent()
+        
     }
     
     
@@ -150,17 +161,17 @@ class Player : SKSpriteNode {
         if (self.velocityY < -6.0)
         {
             self.velocityY = -6.0
-            self.velocityX + 2
+//            self.velocityX + 2
         }
     }
     
     
     // update position of the player
     func update(){
-        if (isIdle == false)
+        if (isAlive == true)
         {
-            self.velocityY += self.gravity
-            self.position.y -= velocityY
+//            self.velocityY += self.gravity
+//            self.position.y -= velocityY
             self.move()
             self.constrainPosition()
         }

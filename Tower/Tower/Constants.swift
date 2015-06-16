@@ -29,4 +29,6 @@ let kColorDeepDarkBlue : UIColor = UIColor(red: 0/255, green: 51/255, blue: 102/
 // categories
 let playerCategory: UInt32 = 0x1 << 0
 let platformCategory: UInt32 = 0x1 << 1
-let tresholdCategory: UInt32 = 0x1 << 2
+let upperTresholdCategory: UInt32 = 0x1 << 2
+let lowerTresholdCategory: UInt32 = 0x1 << 3
+let bottomCategory: UInt32 = 0x1 << 4
