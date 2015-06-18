@@ -41,9 +41,8 @@ class Player : SKSpriteNode {
         self.physicsBody?.collisionBitMask = playerCategory | platformCategory
         
         self.physicsBody?.affectedByGravity = true
-        self.physicsBody?.restitution = 0.5
+        self.physicsBody?.restitution = 0.4
         self.physicsBody?.friction = 0.4
-        
 
     }
     
@@ -129,7 +128,7 @@ class Player : SKSpriteNode {
     }
     
     
-    // let avatar move horizontally by the way it is positioned and its velocity
+    // let avatar move horizontally translating when the sprite is drawn negative
     func move(){
         
         let actionWait = SKAction.waitForDuration(0.1)

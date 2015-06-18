@@ -17,18 +17,23 @@ class PlatformGenerator : SKSpriteNode {
     var generationTimer : NSTimer?
     var platformGround : Platform!
     var platforms = [Platform]()
-    var floorDistance : CGFloat = 60
+    var floorDistance : CGFloat = 70
     var backgroundTest : SKNode!
     
     
     // make the first platform to fill the ground floor at the start of the game
     func addGround(groundWidth: CGFloat){
     
-        platformGround = Platform(size: CGSize(width: groundWidth, height: kPlatformHeight))
-        platformGround.position = CGPoint(x: 0, y: 0)
-        platformGround.zPosition = 2
+        platformGround = Platform(size: CGSizeMake(groundWidth, kPlatformHeight))
+               
+        platformGround.position = CGPoint(x: kMinX, y: 0)
+        platformGround.zPosition = 3
         addChild(platformGround)
+        println("\(platformGround.position)")
         
+        backgroundTest = MovingLevel(size: frame.size)
+        backgroundTest.position = CGPoint(x: kMinX, y: 0)
+        addChild(backgroundTest)
         
     }
 
@@ -63,7 +68,7 @@ class PlatformGenerator : SKSpriteNode {
                 platform.position = CGPoint(x: x, y: y)
             }
             
-            platform.zPosition = 2
+            platform.zPosition = 3
             formerX = x
             platforms.append(platform)
             addChild(platform)
@@ -71,7 +76,7 @@ class PlatformGenerator : SKSpriteNode {
             
             let platformSmall = Platform(size: CGSizeMake(PLATFORM_WIDTH * 0.8, kPlatformHeight))
             platformSmall.position = CGPoint(x: (x - PLATFORM_WIDTH * 2) % screenWidth + kMinX, y: y)
-            platformSmall.zPosition = 2
+            platformSmall.zPosition = 3
             platforms.append(platformSmall)
             addChild(platformSmall)
             
@@ -80,31 +85,37 @@ class PlatformGenerator : SKSpriteNode {
     
     
     func startGen2(){
-        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(1.0), SKAction.runBlock{ self.otherPLatformgenerator()}])))
+        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(3.0), SKAction.runBlock{ self.otherPLatformgenerator()}])))
     }
     
     
     // try another platform generator
     func otherPLatformgenerator() {
+        
         let rightPlatform = Platform(size: CGSizeMake(rangeFloat(kMinX, max: kMaxX), kPlatformHeight))
         rightPlatform.position = convertPoint(CGPoint(x: kMinX, y: CGRectGetMinY(frame) + size.height + floorDistance), toNode: backgroundTest)
         
-        rightPlatform.zPosition = 2
+        rightPlatform.zPosition = 3
+        rightPlatform.name = "platform"
         platforms.append(rightPlatform)
         backgroundTest.addChild(rightPlatform)
         
         // create a gap in between the platforms from left to right
-        let gapInBetween = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: kPlayerHeight * 2, height: kPlatformHeight))
-        gapInBetween.position = convertPoint(CGPoint(x: kMinX + rightPlatform.size.width , y: rightPlatform.position.y), toNode: backgroundTest)
-        gapInBetween.zPosition = 2
+        let gapInBetween = SKSpriteNode(color: UIColor.whiteColor(), size: CGSizeMake(kPlayerHeight * 2, kPlatformHeight))
+        gapInBetween.position = convertPoint(CGPoint(x: kMinX + rightPlatform.size.width, y: rightPlatform.position.y), toNode: backgroundTest)
+        gapInBetween.zPosition = 3
+        gapInBetween.name = "platform"
         backgroundTest.addChild(gapInBetween)
         
         // set the platform on the other side of the gap
         let leftPlatform = Platform(size: CGSizeMake(rangeFloat(kMinX, max: kMaxX), kPlatformHeight))
         leftPlatform.position = convertPoint(CGPoint(x: kMinX + rightPlatform.size.width + gapInBetween.size.width, y: rightPlatform.position.y), toNode: backgroundTest)
-        leftPlatform.zPosition = 2
+        leftPlatform.zPosition = 3
+        leftPlatform.name = "platform"
         platforms.append(leftPlatform)
         backgroundTest.addChild(leftPlatform)
+    
+    
         
     }
     
@@ -129,6 +140,7 @@ class PlatformGenerator : SKSpriteNode {
 //        generationTimer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: "generatePlatform", userInfo: nil, repeats: true)
 //    }
     
+
     
     // start moving all the platforms in the screen
     func startMovingAll(){

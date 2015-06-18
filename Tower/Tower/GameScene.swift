@@ -42,9 +42,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(platformgenerator)
         
         // add ground and platforms to level
-        platformgenerator.addGround(frame.size.width)
-     //   platformgenerator.populate(frame.size.width, num: 8)
-                
+        platformgenerator.addGround(size.width)
+      //  platformgenerator.populate(frame.size.width, num: 8)
+        
         // spawn player and setup properties
         spawnPlayer()
         
@@ -158,7 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player!.baseLine = kPlatformHeight + (player!.size.height / 2 )
         player!.minX = player!.size.width
         player!.maxX = self.frame.size.width - player!.size.width
-        player!.zPosition = 3
+        player!.zPosition = 4
         addChild(player!)
         
     }
@@ -169,7 +169,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreText.fontSize = 20
         scoreText.fontColor = UIColor.blackColor()
         scoreText.position = CGPoint(x: size.width / 6, y: size.height * 0.9)
-        scoreText.zPosition = 3
+        scoreText.zPosition = 5
         addChild(scoreText)
         
 

@@ -18,19 +18,25 @@ class Platform: SKSpriteNode {
     
     init(size: CGSize) {
         // render the platforms by path
+//        let textureSize = CGRect(x: kMinX, y: 0, width: size.width, height: size.height)
+//        let platformImage = UIImage(named: "floor")!.CGImage
+//        
+//        UIGraphicsBeginImageContext(size)
+//        let context = UIGraphicsGetCurrentContext()
+//        CGContextDrawTiledImage(context, textureSize, platformImage)
+//        let tiledPlatform = UIGraphicsGetImageFromCurrentImageContext()
+
         let platformTexture = SKTexture(imageNamed: "floor")
         super.init(texture: platformTexture, color: nil, size: size)
         
 //        let path = CGPathCreateWithRect(CGRect(x: 0, y: 0, width: size.width, height: size.height), nil)
 //        self.path = path
 //        self.fillColor = UIColor.brownColor()
-        
-        
+//        
         
         // use physicsbody to simulate gravity, should not happen for platforms
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: size.width, height: size.height))
         self.physicsBody?.categoryBitMask = platformCategory
-//        self.physicsBody?.contactTestBitMask = playerCategory
         self.physicsBody?.collisionBitMask = platformCategory
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.dynamic = false
