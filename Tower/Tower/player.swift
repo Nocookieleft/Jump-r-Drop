@@ -37,12 +37,13 @@ class Player : SKSpriteNode {
         self.physicsBody = SKPhysicsBody(rectangleOfSize: size)
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.categoryBitMask = playerCategory
-        self.physicsBody?.contactTestBitMask = platformCategory | upperTresholdCategory | lowerTresholdCategory | bottomCategory
+        self.physicsBody?.contactTestBitMask = platformCategory | upperTresholdCategory | lowerTresholdCategory | rockBottomCategory
         self.physicsBody?.collisionBitMask = playerCategory | platformCategory
         
         self.physicsBody?.affectedByGravity = true
         self.physicsBody?.restitution = 0.4
-        self.physicsBody?.friction = 0.4
+        self.physicsBody?.linearDamping = 0.2
+        self.physicsBody?.friction = 0.0
 
     }
     
@@ -106,8 +107,6 @@ class Player : SKSpriteNode {
     // stop jumping of the player
     func ground(){
         
-//        velocityY = 0.0
-       // velocityX = self.size.width/6
         self.isGrounded = true
     }
     
@@ -120,8 +119,7 @@ class Player : SKSpriteNode {
             let velocity_y = self.physicsBody?.velocity.dy
             
             self.physicsBody?.applyImpulse(CGVectorMake(velocity_x!, 30))
-//            velocityY = -10
-//            velocityX - 2
+
             isGrounded = false
         }
 
@@ -139,7 +137,10 @@ class Player : SKSpriteNode {
     }
     
     
-
+//    func pause(){
+//        self.removeAllActions()
+//        
+//    }
     
     // set variables at starting point
     func start(){

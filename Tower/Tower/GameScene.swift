@@ -20,10 +20,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var startLabel = SKLabelNode(fontNamed: "Noteworthy")
     let upperTreshold = SKSpriteNode()
     let lowerTreshold = SKSpriteNode()
-    
+    let pauseButton = SKSpriteNode(imageNamed: "pauseButton")
+    var menuNode = SKShapeNode()
     
     // game cycle variables
     var isOver = false
+    var isOnPause = false
     var isStarted = false
     var level : MovingLevel!
     var score = 0
@@ -38,12 +40,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       
         // add ground of first level
         platformgenerator = PlatformGenerator(color: UIColor.clearColor(), size: view.frame.size)
-        platformgenerator.position = CGPoint(x: 0, y: 0)
+        platformgenerator.position = CGPoint(x: size.width/2, y: size.height/2)
+
         addChild(platformgenerator)
         
         // add ground and platforms to level
         platformgenerator.addGround(size.width)
-      //  platformgenerator.populate(frame.size.width, num: 8)
+        platformgenerator.populate(frame.size.width, num: 8)
         
         // spawn player and setup properties
         spawnPlayer()
@@ -58,11 +61,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // show a nice label at the start of the game
         spawnStartLabel()
         
+        // load in pause button
+        spawnPauseButton()
+        
         // load the treshold in the middle of the screen
         loadTresholds()
         
         // load the boundary of the screen
-        loadBoundary()
+        loadRockBottom()
         
         // add physicsWorld
         physicsWorld.contactDelegate = self
@@ -90,7 +96,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             {
                 platformgenerator.stopAll()
                 
-            }else if (collision == (playerCategory | bottomCategory))
+            }else if (collision == (platformCategory | rockBottomCategory))
+            {
+                
+                platformgenerator.platforms.removeLast()
+                
+            }else if (collision == (playerCategory | rockBottomCategory))
             {
                 gameOver()
             }
@@ -108,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // load an invisible barrier in the screen with physicsbody to check progress of player
     func loadTresholds(){
-        upperTreshold.color = UIColor.redColor()
+        upperTreshold.color = UIColor.clearColor()
         upperTreshold.size = CGSize(width: view!.frame.size.width * 2, height: 10)
         upperTreshold.position = CGPointMake(kMinX, view!.center.y * 1.2)
         upperTreshold.zPosition = 2
@@ -121,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         upperTreshold.physicsBody?.collisionBitMask = upperTresholdCategory
         addChild(upperTreshold)
         
-        lowerTreshold.color = UIColor.yellowColor()
+        lowerTreshold.color = UIColor.clearColor()
         lowerTreshold.size = upperTreshold.size
         lowerTreshold.position = CGPointMake(kMinX, view!.center.y * 0.4)
         //        treshold.position = convertPoint(CGPoint(x: kMinX, y: view!.center.y * 0.8),  toNode: level!)
@@ -139,10 +150,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     // set the boundary of the screen to detect if the avatar falls
-    func loadBoundary(){
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: size.width * 2, height: size.height))
-        physicsBody?.categoryBitMask = bottomCategory
-        physicsBody?.contactTestBitMask = playerCategory
+    func loadRockBottom(){
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: -1.0, width: size.width * 2, height: size.height))
+        physicsBody?.categoryBitMask = rockBottomCategory
+        physicsBody?.contactTestBitMask = playerCategory | platformCategory
         physicsBody?.collisionBitMask = playerCategory
         
     }
@@ -185,14 +196,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    func spawnPauseButton(){
+        pauseButton.size = CGSizeMake(kPlatformHeight * 1.6, kPlatformHeight * 1.6)
+        pauseButton.position = CGPoint(x: size.width * 0.9, y: size.height * 0.9)
+        pauseButton.zPosition = 4
+        pauseButton.name = "pauseButton"
+        addChild(pauseButton)
+    }
+    
 
     // change properties to let game start
     func start(){
         startLabel.removeFromParent()
         player!.start()
         level.start()
-        isStarted = true
-        platformgenerator.startGen2()
+        isStarted = true 
+        //platformgenerator.startGen2()
 
     }
     
@@ -209,9 +228,92 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         presentGameOverScene()
 
     }
+   
+    // pause the game and show a menu for the user to restart game or resume
+    func pauseGame(){
+        menuNode = SKShapeNode(rectOfSize: CGSizeMake(view!.frame.width/2, view!.frame.height*0.5))
+        menuNode.position = view!.center
+        menuNode.zPosition = 5
+        menuNode.fillColor = kColorDarkBlue
+        addChild(menuNode)
+        
+        // make a button shape to indicate that the user can click here
+        let buttonNode1 = SKShapeNode(rectOfSize: CGSizeMake(menuNode.frame.width * 0.9, 60))
+        buttonNode1.position = convertPoint(CGPoint(x: size.width/2, y: size.width/1.8), toNode: menuNode)
+        buttonNode1.fillColor = kColorDarkBlue
+        buttonNode1.zPosition = 6
+        menuNode.addChild(buttonNode1)
+        
+        let buttonNode2 = SKShapeNode(rectOfSize: CGSizeMake(menuNode.frame.width * 0.9, 60))
+        buttonNode2.position = convertPoint(CGPoint(x: size.width/2, y: size.height/2.4), toNode: menuNode)
+        buttonNode2.fillColor = kColorDarkBlue
+        buttonNode2.zPosition = 6
+        menuNode.addChild(buttonNode2)
+        
+        let restartGameNode = SKLabelNode(text: "Restart")
+        restartGameNode.name = "restartGameNode"
+        restartGameNode.fontName = "muli"
+        restartGameNode.fontSize = 20
+        restartGameNode.fontColor = kColorDeepDarkBlue
+        restartGameNode.position = convertPoint(CGPoint(x: size.width/2, y: size.width/1.8), toNode: buttonNode1)
+        restartGameNode.zPosition = 7
+        buttonNode1.addChild(restartGameNode)
+        
+        let resumeGameNode = SKLabelNode(text: "Resume ")
+        resumeGameNode.name = "resumeGameNode"
+        resumeGameNode.fontName = "muli"
+        resumeGameNode.fontSize = 20
+        resumeGameNode.fontColor = kColorDeepDarkBlue
+        resumeGameNode.position = convertPoint(CGPoint(x: size.width/2, y: size.height/2.4), toNode: buttonNode2)
+        resumeGameNode.zPosition = 7
+        buttonNode2.addChild(resumeGameNode)
+        
+        let gameIsPausedMessage = SKLabelNode(text: "Game is Paused")
+        gameIsPausedMessage.name = "pauseMessage"
+        gameIsPausedMessage.fontName = "Noteworthy"
+        gameIsPausedMessage.fontSize = 30
+        gameIsPausedMessage.fontColor = kColorDeepDarkBlue
+        gameIsPausedMessage.position = convertPoint(CGPoint(x: size.width/2, y: size.height * 0.6), toNode: menuNode)
+        gameIsPausedMessage.zPosition = 7
+        menuNode.addChild(gameIsPausedMessage)
+
+        
+        isOnPause = true
+    }
+    
+    func restartGame(){
+        isOver = true
+        player!.isAlive = false
+        platformgenerator.stopAll()
+        level.stop()
+        self.removeAllChildren()
+        
+        if let newScene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+            
+            let newView = self.view! as SKView
+            
+            newScene.size = CGSizeMake(view!.bounds.size.width, view!.bounds.size.height)
+            /* Set the scale mode to scale to fit the window */
+            newScene.scaleMode = .AspectFill
+            
+            newView.presentScene(newScene)
+        }else
+        {
+            println("Failed to Restart Game")
+        }
+
+        
+    }
     
     
-    // present the game over view
+    // resume game by removing the menu and resuming all paused actions
+    func resumeGame(){
+        menuNode.removeFromParent()
+        isOnPause = false
+    }
+    
+    
+    // present the game over view with the same width and height as the gamescene
     func presentGameOverScene(){
         
         if let GOScene = GameOverScene.unarchiveFromFile("GameOverScene") as? GameOverScene {
@@ -219,13 +321,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let GOView = self.view! as SKView
             
             GOScene.size = CGSizeMake(view!.bounds.size.width, view!.bounds.size.height)
-            /* Set the scale mode to scale to fit the window */
             GOScene.scaleMode = .AspectFill
             
             GOView.presentScene(GOScene)
         }else
         {
-            println("shit didn't happen")
+            println("presenting Game Over screen didn't happen")
         }
     
     }
@@ -237,10 +338,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (!isStarted)
         {
             start()
-        }else if (player!.isAlive)
+        }
+        else if (player!.isAlive)
         {
-            player!.jump()
-            test++
+            for touch: AnyObject in touches
+            {
+                
+                let location = touch.locationInNode(self)
+                let touchedNode = nodeAtPoint(location)
+                if let nodeName = touchedNode.name
+                {
+                    switch nodeName
+                    {
+                        case "pauseButton":
+                        
+                            if !isOnPause
+                            {
+                                pauseGame()
+                            }else
+                            {
+                                resumeGame()
+                            }
+                        case "resumeGameNode":
+                            resumeGame()
+                        case "restartGameNode":
+                            restartGame()
+                        default:
+                            test++
+                        
+                    }
+                    
+                }else
+                {
+                    player!.jump()
+                    test++
+                }
+            }
         }
     }
     
@@ -255,17 +388,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        
-        if (player!.isAlive == true)
+        if !isOnPause
         {
-            player!.update()
-            scoreText.text = "Score: \(score) "
-            level.update(currentTime)
-            
+            if (player!.isAlive == true)
+            {
+                player!.update()
+                scoreText.text = "Score: \(score) "
+    //            level.update(currentTime)
+                
+            }else
+            {
+                gameOver()
+
+            }
         }else
         {
-            gameOver()
-
+            level.isOnPause = true
         }
         
     }

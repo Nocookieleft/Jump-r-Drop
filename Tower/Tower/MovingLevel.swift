@@ -21,6 +21,7 @@ class MovingLevel : SKSpriteNode {
     var last_update_time = NSTimeInterval(0)
     
     var isMoving = true
+    var isOnPause = false
     
     
     // make the height double size of the frame to extend it from the
@@ -76,12 +77,13 @@ class MovingLevel : SKSpriteNode {
     
     
     
-    
+    //
     func update(currentTime: CFTimeInterval){
-  
-//        self.delta = currentTime - last_update_time
-//        self.last_update_time = currentTime
-//        
+        if !isOnPause
+        {
+            self.delta = currentTime - last_update_time
+            self.last_update_time = currentTime
+        }
 
         
     }

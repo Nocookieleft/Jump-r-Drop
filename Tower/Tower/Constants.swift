@@ -31,4 +31,4 @@ let playerCategory: UInt32 = 0x1 << 0
 let platformCategory: UInt32 = 0x1 << 1
 let upperTresholdCategory: UInt32 = 0x1 << 2
 let lowerTresholdCategory: UInt32 = 0x1 << 3
-let bottomCategory: UInt32 = 0x1 << 4
+let rockBottomCategory: UInt32 = 0x1 << 4
