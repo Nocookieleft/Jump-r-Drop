@@ -28,14 +28,13 @@ class PlatformGenerator : SKSpriteNode {
         backgroundTest.position = CGPointMake(0, 0)
         addChild(backgroundTest)
         
+        //set the first platform according to the coordinatesystem of the backgroundTest
         platformGround = Platform(size: CGSizeMake(groundWidth, kPlatformHeight))
-//        platformGround.position = CGPoint(x: 0, y: kPlatformHeight/2)
-        platformGround.position = convertPoint(CGPoint(x: 0, y: -size.height/2), toNode: backgroundTest)
+        platformGround.position = convertPoint(CGPoint(x: 0, y: -size.height/2 + platformGround.size.height/2), toNode: backgroundTest)
         
         platformGround.zPosition = 3
         platformGround.name = "groundFloor"
-//        addChild(platformGround)
-        println("\(platformGround.position)")
+
         
         backgroundTest.addChild(platformGround)
     }
@@ -101,7 +100,9 @@ class PlatformGenerator : SKSpriteNode {
         }
         if platformLimit > 0
         {
-            runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(1.0), SKAction.runBlock{ self.otherPLatformgenerator()}])))
+//            runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(2.0), SKAction.runBlock{ self.otherPLatformgenerator()}])))
+            runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(2.0), SKAction.runBlock{ self.populate(self.frame.size.width, num: platformLimit)}])))
+            
         }
     }
     
@@ -110,7 +111,7 @@ class PlatformGenerator : SKSpriteNode {
     func otherPLatformgenerator() {
         
         let rightPlatform = Platform(size: CGSizeMake(rangeFloat(kMinX, max: kMaxX - kPlayerHeight), kPlatformHeight))
-        rightPlatform.position = convertPoint(CGPoint(x: -size.width/2, y: CGRectGetMinY(frame) + floorDistance + size.height/2), toNode: backgroundTest)
+        rightPlatform.position = convertPoint(CGPoint(x: -size.width/2, y: rightPlatform.size.height/2), toNode: backgroundTest)
         println("position rightplatform is \(rightPlatform.position.x)")
         
         rightPlatform.zPosition = 3
@@ -169,23 +170,24 @@ class PlatformGenerator : SKSpriteNode {
         {
             platformGround.startMoving()
         }
-        
-        for eachPlatform in platforms {
-            if (!eachPlatform.isMoving)
-            {
-                eachPlatform.startMoving()
-            }
-        }
-        
-        for eachChild in backgroundTest.children {
-            if (eachChild.name == "gap")
-            {
-                if !eachChild.hasActions()
-                {
-                    eachChild.runAction(SKAction.repeatActionForever(SKAction.moveByX(0, y: -kPlatformHeight/2, duration: 1.0)))
-                }
-            }
-        }
+        backgroundTest.runAction(SKAction.repeatActionForever(SKAction.moveByX(0, y: -kPlatformHeight/2 , duration: 1)))
+//        
+//        for eachPlatform in platforms {
+//            if (!eachPlatform.isMoving)
+//            {
+//                eachPlatform.startMoving()
+//            }
+//        }
+//        
+//        for eachChild in backgroundTest.children {
+//            if (eachChild.name == "gap")
+//            {
+//                if !eachChild.hasActions()
+//                {
+//                    eachChild.runAction(SKAction.repeatActionForever(SKAction.moveByX(0, y: -kPlatformHeight/2, duration: 1.0)))
+//                }
+//            }
+//        }   
     }
     
     
@@ -196,19 +198,20 @@ class PlatformGenerator : SKSpriteNode {
     
     func stopAll(){
 //        stopGenerating()
-        for eachPlatform in platforms {
-            eachPlatform.stopMoving()
-        }
-        
-        for eachChild in backgroundTest.children {
-            if (eachChild.name == "gap")
-            {
-                if eachChild.hasActions()
-                {
-                    eachChild.removeAllActions()
-                }
-            }
-        }
+        backgroundTest.removeAllActions()
+//        for eachPlatform in platforms {
+//            eachPlatform.stopMoving()
+//        }
+//        
+//        for eachChild in backgroundTest.children {
+//            if (eachChild.name == "gap")
+//            {
+//                if eachChild.hasActions()
+//                {
+//                    eachChild.removeAllActions()
+//                }
+//            }
+//        }
         
 
     }

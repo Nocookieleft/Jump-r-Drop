@@ -27,9 +27,6 @@ class Player : SKSpriteNode {
         let imageTexture = SKTexture(imageNamed: imageNamed)
         super.init(texture: imageTexture, color: nil, size: CGSizeMake(kPlayerHeight, kPlayerHeight))
         
-        // use physicsbody to simulate gravity and stuff on player avatar
-        loadPhysicsBody(CGSizeMake(kPlayerHeight, kPlayerHeight - 10 ))
-        
     }
     
     // load physics body properties
@@ -118,7 +115,7 @@ class Player : SKSpriteNode {
             let velocity_x = self.physicsBody?.velocity.dx
             let velocity_y = self.physicsBody?.velocity.dy
             
-            self.physicsBody?.applyImpulse(CGVectorMake(velocity_x!, 30))
+            self.physicsBody?.applyImpulse(CGVectorMake(velocity_x!, 40))
 
             isGrounded = false
         }
@@ -142,10 +139,11 @@ class Player : SKSpriteNode {
 //        
 //    }
     
-    // set variables at starting point
+    
+    // set speed and gravity forces on avatar at the beginning of the game
     func start(){
         velocityX = self.size.width/8
-        
+        loadPhysicsBody(CGSizeMake(kPlayerHeight, kPlayerHeight))
     }
     
     // stop all actions of the avatar and remove its node
@@ -161,7 +159,7 @@ class Player : SKSpriteNode {
         if (self.velocityY < -6.0)
         {
             self.velocityY = -6.0
-//            self.velocityX + 2
+
         }
     }
     
@@ -170,8 +168,7 @@ class Player : SKSpriteNode {
     func update(){
         if (isAlive == true)
         {
-//            self.velocityY += self.gravity
-//            self.position.y -= velocityY
+
             self.move()
             self.constrainPosition()
         }

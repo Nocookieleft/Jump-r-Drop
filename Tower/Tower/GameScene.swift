@@ -90,6 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }else if (collision == (playerCategory | upperTresholdCategory))
             {
+                platformgenerator.startGen2()
                 platformgenerator.startMovingAll()
                 
             }else if (collision == (playerCategory | lowerTresholdCategory))
@@ -326,7 +327,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             GOView.presentScene(GOScene)
         }else
         {
-            println("presenting Game Over screen didn't happen")
+            println("Failed to present Game Over screen ")
         }
     
     }
@@ -339,42 +340,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         {
             start()
         }
-        else if (player!.isAlive)
+        for touch: AnyObject in touches
         {
-            for touch: AnyObject in touches
+            let location = touch.locationInNode(self)
+            let touchedNode = nodeAtPoint(location)
+            if let nodeName = touchedNode.name
             {
-                
-                let location = touch.locationInNode(self)
-                let touchedNode = nodeAtPoint(location)
-                if let nodeName = touchedNode.name
+                switch nodeName
                 {
-                    switch nodeName
-                    {
-                        case "pauseButton":
-                        
-                            if !isOnPause
-                            {
-                                pauseGame()
-                            }else
-                            {
-                                resumeGame()
-                            }
-                        case "resumeGameNode":
-                            resumeGame()
-                        case "restartGameNode":
-                            restartGame()
-                        default:
-                            test++
-                        
-                    }
+                    case "pauseButton":
                     
-                }else
-                {
-                    player!.jump()
-                    test++
+                        if !isOnPause
+                        {
+                            pauseGame()
+                        }else
+                        {
+                            resumeGame()
+                        }
+                    case "resumeGameNode":
+                        resumeGame()
+                    case "restartGameNode":
+                        restartGame()
+                    default:
+                        player!.jump()
                 }
+                
+            }else
+            {
+                player!.jump()
             }
         }
+
     }
     
     

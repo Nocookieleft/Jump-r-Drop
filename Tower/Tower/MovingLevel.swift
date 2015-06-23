@@ -83,6 +83,9 @@ class MovingLevel : SKSpriteNode {
         {
             self.delta = currentTime - last_update_time
             self.last_update_time = currentTime
+        }else
+        {
+            
         }
 
         
