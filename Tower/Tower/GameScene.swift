@@ -153,7 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // set the boundary of the screen to detect if the avatar falls
     func loadRockBottom(){
-        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: -1.0, width: size.width * 2, height: frame.size.height * 2))
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: -2, width: size.width * 2, height: frame.size.height * 3))
         physicsBody?.categoryBitMask = rockBottomCategory
         physicsBody?.contactTestBitMask = playerCategory | platformCategory
         physicsBody?.collisionBitMask = playerCategory

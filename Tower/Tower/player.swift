@@ -111,8 +111,7 @@ class Player : SKSpriteNode {
     
     // begin avatar jump if player is on the ground
     func jump(){
-        if (self.physicsBody?.resting != nil)
-            //self.isGrounded == true)
+        if (self.isGrounded == true)
         {
             let velocity_x = self.physicsBody?.velocity.dx
             let velocity_y = self.physicsBody?.velocity.dy
@@ -121,7 +120,7 @@ class Player : SKSpriteNode {
             self.physicsBody?.applyImpulse(CGVectorMake(velocity_x!, 40))
              
 //            velocityY = 30
-//            isGrounded = false
+            isGrounded = false
            // self.physicsBody!.resting = false
             
         }
@@ -143,8 +142,7 @@ class Player : SKSpriteNode {
     
     // set speed and gravity forces on avatar at the beginning of the game
     func start(){
-        velocityX = self.size.width/8
-//        gravity = 2
+        velocityX = self.size.width/10
         loadPhysicsBody(CGSizeMake(kPlayerHeight, kPlayerHeight))
     }
     
@@ -173,7 +171,7 @@ class Player : SKSpriteNode {
         {
             self.move()
            // velocityY -= addedGravity
-            self.position.y -= addedGravity
+//            self.position.y -= addedGravity
             //velocityY -= gravity
             self.constrainPosition()
         }

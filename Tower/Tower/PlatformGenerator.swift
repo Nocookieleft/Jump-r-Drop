@@ -19,7 +19,7 @@ class PlatformGenerator : SKSpriteNode {
     var platforms = [Platform]()
     var floorDistance : CGFloat = 100
     var backgroundTest : SKNode!
-    var carrotNode = SKSpriteNode(imageNamed: "carrot")
+    var finishLine = SKSpriteNode(imageNamed: "carrot")
     
     // make the first platform to fill the ground floor at the start of the game
     func addGround(groundWidth: CGFloat){
@@ -71,19 +71,20 @@ class PlatformGenerator : SKSpriteNode {
     
     // load carrot at the top of the screen with physics set to let it float in midair and register contact from playerCategory
     func loadFinishLine(){
-        carrotNode.size = CGSizeMake(30, 30)
-        carrotNode.position = convertPoint(CGPoint(x: 0, y: size.height * 1.2), toNode: backgroundTest)
-        carrotNode.zPosition = 3
-        carrotNode.name = "finishLine"
-
-        carrotNode.physicsBody = SKPhysicsBody(rectangleOfSize: carrotNode.size)
-        carrotNode.physicsBody?.affectedByGravity = false
-        carrotNode.physicsBody?.dynamic = false
-        carrotNode.physicsBody?.categoryBitMask = finishLineCategory
-        carrotNode.physicsBody?.contactTestBitMask = playerCategory
-        carrotNode.physicsBody?.collisionBitMask = finishLineCategory
+        finishLine.size = CGSizeMake(kPlayerHeight * 0.9, kPlayerHeight * 0.9)
+        finishLine.position = convertPoint(CGPoint(x: 0, y: size.height * 1.5), toNode: backgroundTest)
+        finishLine.zPosition = 3
+        finishLine.name = "finishLine"
         
-        backgroundTest.addChild(carrotNode)
+        // set gravitational properties and other forces
+        finishLine.physicsBody = SKPhysicsBody(rectangleOfSize: finishLine.size)
+        finishLine.physicsBody?.affectedByGravity = false
+        finishLine.physicsBody?.dynamic = false
+        finishLine.physicsBody?.categoryBitMask = finishLineCategory
+        finishLine.physicsBody?.contactTestBitMask = playerCategory
+        finishLine.physicsBody?.collisionBitMask = finishLineCategory
+        // add finishline to the backgroundNode
+        backgroundTest.addChild(finishLine)
 
     }
     
