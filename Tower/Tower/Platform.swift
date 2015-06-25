@@ -17,16 +17,12 @@ class Platform: SKSpriteNode {
     
     
     init(size: CGSize) {
-        // render the platforms by path
+        // render the platforms by sprite from the image assets
 
         let platformTexture = SKTexture(imageNamed: "floor")
         super.init(texture: platformTexture, color: nil, size: size)
         self.name = "platform"
         
-//        let path = CGPathCreateWithRect(CGRect(x: 0, y: 0, width: size.width, height: size.height), nil)
-//        self.path = path
-//        self.fillColor = UIColor.brownColor()
-//        
         
         // use physicsbody to simulate gravity, should not happen for platforms
 //        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: size.width, height: size.height))
@@ -41,7 +37,7 @@ class Platform: SKSpriteNode {
 
     // start moving platform down the screen
     func startMoving(){
-        let moveDown = SKAction.moveByX(0, y: -kPlatformHeight/2 , duration: 1.0)
+        let moveDown = SKAction.moveByX(0, y: -kDefaultSpeed , duration: 1.0)
         runAction(SKAction.repeatActionForever(moveDown))
         isMoving = true
     }

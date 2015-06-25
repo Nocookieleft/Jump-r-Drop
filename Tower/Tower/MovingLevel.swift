@@ -63,7 +63,7 @@ class MovingLevel : SKSpriteNode {
     
     // move the frame down over the screen and reset position to make illusion of neverending level
     func moveBG() {
-        let adjustedDuration = NSTimeInterval(frame.size.height / kDefaultXtoMovePerSecond)
+        let adjustedDuration = NSTimeInterval(frame.size.height / kDefaultSpeed)
         let moveUp = SKAction.moveByX(0.0, y: -frame.size.height / 2 , duration: adjustedDuration/2)
         let resetPosition = SKAction.moveToY(0.0, duration: 0.0)
         runAction(SKAction.repeatActionForever(SKAction.sequence([moveUp, resetPosition])))

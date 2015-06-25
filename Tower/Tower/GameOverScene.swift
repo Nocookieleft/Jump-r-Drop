@@ -13,16 +13,25 @@ class GameOverScene : SKScene {
     
     let GOMessage = SKLabelNode(fontNamed: "Noteworthy")
     let NGButton = SKLabelNode(fontNamed: "Muli")
+    var hasWon = false
     
     override func didMoveToView(view: SKView) {
         // setup scene
         backgroundColor = kColorLightBlue
-        GOMessage.text = "Game Over"
+        
+        if hasWon
+        {
+            GOMessage.text = "You Won!"
+        }else
+        {
+            GOMessage.text = "You Lost"
+        }
+        
         GOMessage.fontColor = kColorDeepDarkBlue
         GOMessage.position = CGPoint(x: view.center.x, y: (view.frame.height * 0.6))
         addChild(GOMessage)
         
-        // show a menu
+        // show a menu like the pause-menu
         let menuNode = SKShapeNode(rectOfSize: CGSizeMake(view.frame.width/2, view.frame.height*0.5))
         menuNode.position = view.center
         menuNode.fillColor = kColorDarkBlue
@@ -32,6 +41,7 @@ class GameOverScene : SKScene {
         let buttonNode = SKShapeNode(rectOfSize: CGSizeMake(menuNode.frame.width * 0.9, 60))
         buttonNode.position = CGPointMake(view.center.x, (menuNode.frame.height * 0.8))
         buttonNode.fillColor = kColorDarkBlue
+        buttonNode.name = "newGameButton"
         addChild(buttonNode)
         
         // show a "New Game" label node
@@ -58,7 +68,7 @@ class GameOverScene : SKScene {
             newView.presentScene(newScene)
         }else
         {
-            println("shit didn't happen")
+            println("Failed to Restart Game")
         }
     }
     
@@ -73,15 +83,13 @@ class GameOverScene : SKScene {
             let touchedNode = nodeAtPoint(location)
             if let nodeName = touchedNode.name {
             
-                if (nodeName == "NewGame")
+                if (nodeName == "NewGame" || nodeName == "newGameButton")
                 {
-                    println("User tapped New Game")
                     restartGame()
-                    
                     
                 }else
                 {
-                    println("nothing here")
+                    println("Failed to Start a New Game")
                 }
             }
         }
