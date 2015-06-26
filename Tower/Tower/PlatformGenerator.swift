@@ -5,6 +5,7 @@
 //  Created by Evil Cookie on 08/06/15.
 //  Copyright (c) 2015 Evil Cookie. All rights reserved.
 //
+//
 
 import Foundation
 import SpriteKit
@@ -12,12 +13,10 @@ import SpriteKit
 
 class PlatformGenerator : SKSpriteNode {
     
-    
-    let PLATFORM_WIDTH : CGFloat = 120
     var generationTimer : NSTimer?
     var platformGround : Platform!
     var platforms = [Platform]()
-    var floorDistance : CGFloat = 100
+    
     var backgroundTest : SKNode!
     var finishLine = SKSpriteNode(imageNamed: "carrot")
     
@@ -99,15 +98,15 @@ class PlatformGenerator : SKSpriteNode {
             // populate the screen with platforms spaced some platformheight from eachother
             // and at a random position horizontally within the bounds of the screen
             var otherY = CGFloat(i) * (kPlayerHeight * 2.5)
-            let platform = Platform(size: CGSizeMake(PLATFORM_WIDTH, kPlatformHeight))
+            let platform = Platform(size: CGSizeMake(kPlatformWidth, kPlatformHeight))
             let x = rangeFloat(0, max: maxX)
-            let y = otherY + floorDistance - size.height/2
+            let y = otherY + kfloorDistance - size.height/2
             
             // if a platform is about to be positioned at the same x as the one before it,
             // give the platform another position
-            if (formerX == x || formerX + PLATFORM_WIDTH/2 > x)
+            if (formerX == x || formerX + kPlatformWidth/2 > x)
             {
-                platform.position = convertPoint(CGPoint(x: (x - PLATFORM_WIDTH * 2 % maxX/2), y: y), toNode: backgroundTest)
+                platform.position = convertPoint(CGPoint(x: (x - kPlatformWidth * 2 % maxX/2), y: y), toNode: backgroundTest)
                  println(" Other platform is set to  \(platform.position)")
                 println("\(x) en former x is \(formerX)")
             }
@@ -117,17 +116,17 @@ class PlatformGenerator : SKSpriteNode {
                 println(" platform is positioned at \(platform.position)")
             }
             
-            platform.zPosition = 3
+            platform.zPosition = platformZposition
             formerX = platform.position.x
             platforms.append(platform)
             backgroundTest.addChild(platform)
             
-            let platformSmall = Platform(size: CGSizeMake(PLATFORM_WIDTH * 0.5, kPlatformHeight))
+            let platformSmall = Platform(size: CGSizeMake(kPlatformWidth * 0.5, kPlatformHeight))
             
             // set small platform at left or right side of the platform according to the position of the larger platform
-            if (platform.position.x + PLATFORM_WIDTH > maxX/2)
+            if (platform.position.x + kPlatformWidth > maxX/2)
             {
-                platformSmall.position = convertPoint(CGPoint(x: (x + PLATFORM_WIDTH + kGapDistance) % 160 * -1, y: y),toNode: backgroundTest)
+                platformSmall.position = convertPoint(CGPoint(x: (x + kPlatformWidth + kGapDistance) % 160 * -1, y: y),toNode: backgroundTest)
                 println(" Small platform is positioned at \(platformSmall.position)")
             }
             else
@@ -148,75 +147,9 @@ class PlatformGenerator : SKSpriteNode {
             
         }
     }
+
     
-    // check how many platforms are in play and generate if there are less than 18 on screen
-    func startGen2(){
-        var platformLimit = 20
-        for eachChild in backgroundTest.children
-        {
-            if let anyName = (eachChild as! SKSpriteNode).name
-            {
-                if anyName == "platform"
-                {
-                    platformLimit--
-                }
-            }
-        }
-        if platformLimit > 0
-        {
-//            runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.waitForDuration(2.0), SKAction.runBlock{ self.otherPLatformgenerator()}])))
-            runAction(SKAction.repeatAction(SKAction.sequence([SKAction.waitForDuration(4.0), SKAction.runBlock{ self.populate(self.frame.size.width, num: 1)}]), count: platformLimit))
-            
-        }
-    }
-    
-    
-    // try another platform generator to make platform-gap-platform sequence running along the x-axis of the screen
-    func otherPLatformgenerator() {
-        
-        let rightPlatform = Platform(size: CGSizeMake(rangeFloat(kMinX, max: kMaxX - kPlayerHeight), kPlatformHeight))
-        rightPlatform.position = convertPoint(CGPoint(x: -size.width/2, y: rightPlatform.size.height/2), toNode: backgroundTest)
-        println("position rightplatform is \(rightPlatform.position.x)")
-        
-        rightPlatform.zPosition = 3
-        platforms.append(rightPlatform)
-        backgroundTest.addChild(rightPlatform)
-        
-        // create a gap in between the platforms from left to right
-        let gapInBetween = SKSpriteNode(color: UIColor.whiteColor(), size: CGSizeMake(kPlayerHeight * 2, kPlatformHeight))
-        gapInBetween.position = convertPoint(CGPoint(x: -rightPlatform.size.width/2 - gapInBetween.size.width/2 , y: rightPlatform.position.y), toNode: backgroundTest)
-        gapInBetween.zPosition = 3
-        gapInBetween.name = "gap"
-        backgroundTest.addChild(gapInBetween)
-        
-        
-        // set the platform on the other side of the gap
-        let leftPlatform = Platform(size: CGSizeMake( CGFloat((frame.size.width - rightPlatform.size.width - gapInBetween.size.width ) + kMinX), kPlatformHeight))
-        println("left platform width is \(leftPlatform.size.width)")
-        
-        leftPlatform.position = convertPoint(CGPoint(x: (rightPlatform.size.width + gapInBetween.size.width)/2, y: rightPlatform.position.y), toNode: backgroundTest)
-        leftPlatform.zPosition = 3
-        platforms.append(leftPlatform)
-        backgroundTest.addChild(leftPlatform)
-    
-        
-    }
-    
-    
-    
-    // generate a platform at the top of the screen
-    func generatePlatform(){
-        let newPlatform = Platform(size: CGSizeMake(PLATFORM_WIDTH, kPlatformHeight))
-        let x = rangeFloat(kMinX, max: kMaxX)
-        let y = kPlatformHeight
-    
-        newPlatform.position = CGPointMake(x, y + frame.size.height)
-        println(" GENERATED PLATFORM AT \(newPlatform.position)")
-        newPlatform.zPosition = 3
-        platforms.append(newPlatform)
-        addChild(newPlatform)
-    }
-    
+
     
     // start moving all the platforms and gaps in the screen
     func startMovingAll(){
